@@ -1,0 +1,52 @@
+/* Make the navbar fixed at the top */
+.navbar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1030;
+}
+
+/* Sidebar styling */
+.sidebar {
+    position: fixed;
+    top: 56px; /* Adjust this if navbar height is different */
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #f8f9fa;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding-top: 20px;
+    z-index: 1000;
+}
+
+/* Main content styling */
+.main-content {
+    margin-left: 250px;
+    margin-top: 56px; /* Offset the content to be below the navbar */
+    padding: 20px;
+}
+
+.sidebar-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar-logo img {
+    max-width: 100px;
+    border-radius: 50%;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #333;
+}
+
+.nav-link:hover {
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+.nav-item.active .nav-link {
+    font-weight: bold; /* Highlight with bold text */
+    color: #28a745 !important; /* Highlight color (e.g., green) */
+}

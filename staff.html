@@ -43,13 +43,13 @@
         <h4>Staff Management</h4>
     </div>
     <nav class="nav flex-column mt-4">
-        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-staff-member">
             Add New Staff Member
         </button>
-        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff">
+        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member" data-bs-toggle="modal">
             Delete Existing
         </button>
-        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff">
+        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal" data-bs-target="#update-staff-member">
             Update Existing
         </button>
     </nav>
@@ -61,8 +61,8 @@
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- Add Staff Member -->
+<div class="modal fade" id="add-staff-member" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -165,7 +165,176 @@
         </div>
     </div>
 </div>
+<!--Update Staff Member-->
+<div class="modal fade" id="update-staff-member" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="update-member">@</span>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="update-member">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-dark" data-bs-target="#update-staff-member1" data-bs-toggle="modal">Search Member</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="update-staff-member1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel2">Update Member</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 w-100 h-100" style="overflow-y: auto;">
+                <div class="container-fluid">
+                    <div class="card shadow-sm border-0 w-100 h-100 p-4">
+                        <form>
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="firstName-up" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="firstName-up" placeholder="Enter your first name" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="lastName-up" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName-up" placeholder="Enter your last name" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="designation-up" class="form-label">Designation</label>
+                                        <input type="text" class="form-control" id="designation-up" placeholder="Enter your designation" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Gender</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="male-up" value="male">
+                                            <label class="form-check-label" for="male-up">Male</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="female-up" value="female">
+                                            <label class="form-check-label" for="female-up">Female</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="other-up" value="other">
+                                            <label class="form-check-label" for="other-up">Other</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="joinedDate-up" class="form-label">Joined Date</label>
+                                        <input type="date" class="form-control" id="joinedDate-up" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="dob-up" class="form-label">Date of Birth</label>
+                                        <input type="date" class="form-control" id="dob-up" required>
+                                    </div>
+                                </div>
 
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="address1-up" class="form-label">Address Line 1</label>
+                                        <input type="text" class="form-control" id="address1-up" placeholder="Enter address line 1" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="address2-up" class="form-label">Address Line 2</label>
+                                        <input type="text" class="form-control" id="address2-up" placeholder="Enter address line 2">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="address3-up" class="form-label">Address Line 3</label>
+                                        <input type="text" class="form-control" id="address3-up" placeholder="Enter address line 3">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="address4-up" class="form-label">Address Line 4</label>
+                                        <input type="text" class="form-control" id="address4-up" placeholder="Enter address line 4">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="address5-up" class="form-label">Address Line 5</label>
+                                        <input type="text" class="form-control" id="address5-up" placeholder="Enter address line 5">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="contactNo-up" class="form-label">Contact Number</label>
+                                        <input type="text" class="form-control" id="contactNo-up" placeholder="Enter contact number" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="email-up" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email-up" placeholder="Enter your email" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="role-up" class="form-label">Role</label>
+                                        <select class="form-control" id="role-up" required>
+                                            <option value="administrator">Administrator</option>
+                                            <option value="scientist">Scientist</option>
+                                            <option value="manager">Manager</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary">Submit</button>
+                <button class="btn btn-primary" data-bs-target="#update-staff-member" data-bs-toggle="modal">Back to search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Delete Staff Member-->
+<div class="modal fade" id="delete-member" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="delete-member-label">Delete a member</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Search a member to delete
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="delete-member-span">@</span>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="delete-member-span">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-dark" data-bs-target="#confirmation" data-bs-toggle="modal">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmation" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="warning">Are you sure you want to delete this member?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                This process is irreversable!
+                <div class="card" style="width: 18rem;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" id="delete-id">ID</li>
+                        <li class="list-group-item" id="delete-name">Name</li>
+                        <li class="list-group-item" id="delete-designation">Designation</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#delete-member" data-bs-toggle="modal">Back to search</button>
+                <button class="btn btn-outline-danger" >Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Open first modal</button>
 <!-- Main Content -->
 <div class="main-content">
 

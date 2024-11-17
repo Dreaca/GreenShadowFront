@@ -72,5 +72,6 @@
 }
 .nav-item.active .nav-link {
     font-weight: bold; /* Highlight with bold text */
-    color: #fdfffe !important; /* Highlight color (e.g., green) */
+    color: #fdfffe !important;
+    text-decoration: underline;
 }

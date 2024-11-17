@@ -37,16 +37,133 @@
 </nav>
 
 <!-- Sidebar -->
-<div class="sidebar">
+<<div class="sidebar">
     <div class="sidebar-logo">
-        <img src="logo.png" alt="Logo"> <!-- Replace with your logo path -->
+        <img src="./resources/logo.png" alt="Logo" class="logo"> <!-- Replace with your logo path -->
         <h4>Staff Management</h4>
     </div>
-    <nav class="nav flex-column">
-        <a class="nav-link active" href="#" id="add-staff">Add New Staff Member</a>
-        <a class="nav-link" href="#" id="delete-staff">Delete Existing</a>
-        <a class="nav-link" href="#" id="update-staff">Update Existing</a>
+    <nav class="nav flex-column mt-4">
+        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Add New Staff Member
+        </button>
+        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff">
+            Delete Existing
+        </button>
+        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff">
+            Update Existing
+        </button>
     </nav>
+    <div class="logout-section mt-auto">
+        <button type="button" class="btn btn-danger w-100" id="logout-btn">
+            Logout
+        </button>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Member</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 w-100 h-100" style="overflow-y: auto;">
+                <div class="container-fluid">
+                    <div class="card shadow-sm border-0 w-100 h-100 p-4">
+                        <form>
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="designation" class="form-label">Designation</label>
+                                        <input type="text" class="form-control" id="designation" placeholder="Enter your designation" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Gender</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="male" value="male">
+                                            <label class="form-check-label" for="male">Male</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                            <label class="form-check-label" for="female">Female</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="other" value="other">
+                                            <label class="form-check-label" for="other">Other</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="joinedDate" class="form-label">Joined Date</label>
+                                        <input type="date" class="form-control" id="joinedDate" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="dob" class="form-label">Date of Birth</label>
+                                        <input type="date" class="form-control" id="dob" required>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="address1" class="form-label">Address Line 1</label>
+                                        <input type="text" class="form-control" id="address1" placeholder="Enter address line 1" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="address2" class="form-label">Address Line 2</label>
+                                        <input type="text" class="form-control" id="address2" placeholder="Enter address line 2">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="address3" class="form-label">Address Line 3</label>
+                                        <input type="text" class="form-control" id="address3" placeholder="Enter address line 3">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="address4" class="form-label">Address Line 4</label>
+                                        <input type="text" class="form-control" id="address4" placeholder="Enter address line 4">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="address5" class="form-label">Address Line 5</label>
+                                        <input type="text" class="form-control" id="address5" placeholder="Enter address line 5">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="contactNo" class="form-label">Contact Number</label>
+                                        <input type="text" class="form-control" id="contactNo" placeholder="Enter contact number" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="role" class="form-label">Role</label>
+                                        <select class="form-control" id="role" required>
+                                            <option value="administrator">Administrator</option>
+                                            <option value="scientist">Scientist</option>
+                                            <option value="manager">Manager</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary">Submit</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Main Content -->
@@ -57,8 +174,14 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Name</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Designation</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Joined Date</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Address</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Field List</th>
         </tr>
         </thead>
         <tbody>

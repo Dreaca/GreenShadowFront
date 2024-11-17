@@ -1,0 +1,14 @@
+.nav-item.active .nav-link {
+    font-weight: bold; /* Highlight with bold text */
+    color: #fdfffe !important;
+    text-decoration: underline;
+}
+.navbar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1030;
+    background: linear-gradient(to left, #82ccdd, #a8e6a3);
+    padding: 1rem;
+}

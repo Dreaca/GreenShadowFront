@@ -41,16 +41,16 @@ $("form").on("submit", function (event) {
 function redirectToDashboard(role) {
     switch (role) {
         case "ROLE_ADMINISTRATOR":
-            window.location.href = "./html/dashboards/adminDashboard.html";
+            window.location.href = "./html/navPages/staff.html";
             break;
         case "ROLE_MANAGER":
             window.location.href = "./html/navPages/staff.html";
             break;
         case "ROLE_SCIENTIST":
-            window.location.href = "./html/dashboards/scientistDashboard.html";
+            window.location.href = "./html/navPages/crop.html";
             break;
         case "ROLE_OTHER":
-            window.location.href = "./html/dashboards/userDashboard.html";
+            window.location.href = "./html/navPages/log.html";
             break;
         default:
             alert("Unknown role. Access restricted.");

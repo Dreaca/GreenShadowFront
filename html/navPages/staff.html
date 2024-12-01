@@ -179,12 +179,12 @@
             </div>
             <div class="modal-body">
                 <div class="input-group flex-nowrap">
-                    <span class="input-group-text" id="update-member">@</span>
-                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="update-member">
+                    <span class="input-group-text" >@</span>
+                    <input type="text" id="update-member" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="update-member">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline-dark" data-bs-target="#update-staff-member1" data-bs-toggle="modal">Search Member</button>
+                <button class="btn btn-outline-dark" id="search-up" data-bs-target="#update-staff-member1" data-bs-toggle="modal">Search Member</button>
             </div>
         </div>
     </div>
@@ -218,15 +218,15 @@
                                     <div class="form-group mb-3">
                                         <label class="form-label">Gender</label><br>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="male-up" value="male">
+                                            <input class="form-check-input" type="radio" name="gender" id="male-up" value="MALE">
                                             <label class="form-check-label" for="male-up">Male</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="female-up" value="female">
+                                            <input class="form-check-input" type="radio" name="gender" id="female-up" value="FEMALE">
                                             <label class="form-check-label" for="female-up">Female</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="other-up" value="other">
+                                            <input class="form-check-input" type="radio" name="gender" id="other-up" value="OTHER">
                                             <label class="form-check-label" for="other-up">Other</label>
                                         </div>
                                     </div>
@@ -273,10 +273,10 @@
                                     <div class="form-group mb-3">
                                         <label for="role-up" class="form-label">Role</label>
                                         <select class="form-control" id="role-up" required>
-                                            <option value="administrator">Administrator</option>
-                                            <option value="scientist">Scientist</option>
-                                            <option value="manager">Manager</option>
-                                            <option value="other">Other</option>
+                                            <option value="ADMINISTRATOR">Administrator</option>
+                                            <option value="SCIENTIST">Scientist</option>
+                                            <option value="MANAGER">Manager</option>
+                                            <option value="OTHER">Other</option>
                                         </select>
                                     </div>
                                 </div>
@@ -306,11 +306,11 @@
                 Search a member to delete
                 <div class="input-group flex-nowrap">
                     <span class="input-group-text" id="delete-member-span">@</span>
-                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="delete-member-span">
+                    <input type="text" id="username-to-delete" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="delete-member-span">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline-dark" data-bs-target="#confirmation" data-bs-toggle="modal">Search</button>
+                <button class="btn btn-outline-dark" id="search-member-btn" data-bs-target="#confirmation" data-bs-toggle="modal">Search</button>
             </div>
         </div>
     </div>
@@ -334,7 +334,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" data-bs-target="#delete-member" data-bs-toggle="modal">Back to search</button>
-                <button class="btn btn-outline-danger" >Yes</button>
+                <button class="btn btn-outline-danger" id="delete-member-btn" >Yes</button>
             </div>
         </div>
     </div>
@@ -357,7 +357,7 @@
             <th scope="col">Field List</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="member-tbody">
 
         </tbody>
     </table>

@@ -1,48 +1,45 @@
 $(document).ready(function () {
+    const token = localStorage.getItem("authToken")
     $("#add-new-member").on("click", function () {
-        console.log("clicked")
-        const staffDTO = {
-            firstName: $("#firstName").val(),
-            lastName: $("#lastName").val(),
-            designation: $("#designation").val(),
-            gender: $('input[name="gender"]:checked').val(),
-            joinedDate: $("#joinedDate").val(),
-            DOB: $("#dob").val(),
-            addressLine1: $("#address1").val(),
-            addressLine2: $("#address2").val(),
-            addressLine3: $("#address3").val(),
-            addressLine4: $("#address4").val(),
-            addressLine5: $("#address5").val(),
-            contactNo: $("#contactNo").val(),
-            email: $("#email").val(),
-            role: $("#role").val()
-        };
+        console.log("clicked");
+        const updateMember = new FormData();
+        updateMember.append("firstName", $("#firstName").val());
+        updateMember.append("lastName", $("#lastName").val());
+        updateMember.append("designation", $("#designation").val());
+        updateMember.append("gender", $('input[name="gender"]:checked').val());
+        updateMember.append("joinedDate", $("#joinedDate").val());
+        updateMember.append("dob", $("#dob").val());
+        updateMember.append("role", $("#role").val());
+        updateMember.append("address1", $("#address1").val());
+        updateMember.append("address2", $("#address2").val());
+        updateMember.append("address3", $("#address3").val());
+        updateMember.append("address4", $("#address4").val());
+        updateMember.append("address5", $("#address5").val());
+        updateMember.append("contactNo", $("#contactNo").val());
+        updateMember.append("email", $("#email").val());
 
-        // Validate required fields
-        // if (!staffDTO.firstName || !staffDTO.lastName || !staffDTO.designation || !staffDTO.gender ||
-        //     !staffDTO.joinedDate || !staffDTO.dob || !staffDTO.contactNo || !staffDTO.email) {
-        //     alert("Please fill all the required fields.");
-        //     return;
-        // }
 
-        // AJAX POST request
-        $.ajax({
-            url: "http://localhost:8080/greenshadow/api/v1/staff/save",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(staffDTO),
-            success: function (response) {
-                console.log("Staff member added successfully:", response);
-                alert("Staff member added successfully!");
-                $("#add-staff-member").modal("hide"); // Close the modal
-                // Optionally, refresh the staff list or reset the form
-                $("#add-staff-member form")[0].reset(); // Reset the form
-            },
-            error: function (xhr, status, error) {
-                console.error("Error adding staff member:", xhr.responseText || status);
-                alert("Failed to add staff member. Please try again.");
-            }
-        });
+            $.ajax({
+                url: "http://localhost:8080/greenshadow/api/v1/staff/save",
+                method: "POST",
+                processData: false,
+                contentType: false,
+                data: updateMember,
+                headers: {
+                    'Authorization': 'Bearer ' + token // Include the Bearer token in the Authorization header
+                },
+                success: function (response) {
+                    console.log("Staff member added successfully:", response);
+                    alert("Staff member added successfully!");
+                    $("#add-staff-member").modal("hide"); // Close the modal
+                    $("#add-staff-member form")[0].reset(); // Reset the form
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error adding staff member:", xhr.responseText || status);
+                    alert("Failed to add staff member. Please try again.");
+                }
+            });
+
     });
     // Update Member
     // Handle Search Member button
@@ -137,5 +134,11 @@ $(document).ready(function () {
             }
         });
     });
+
+    function getTokenExpiration(token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp * 1000; // Convert to milliseconds
+    }
+
 });
 

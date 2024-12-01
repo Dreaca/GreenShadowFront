@@ -25,6 +25,7 @@ $(document).ready(function () {
         sendMultipartRequest("http://localhost:8080/greenshadow/api/v1/auth/signup", formData)
             .then(response => {
                 console.log("SignUp successful:", response);
+                localStorage.setItem("authToken",response.token)
                 alert("Sign-up completed successfully!");
                 window.location.href = "index.html";
             })

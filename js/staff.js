@@ -235,12 +235,12 @@ $(document).ready(function () {
                         <td class="name">${item.firstName} ${item.lastName}</td>
                         <td class="designation">${item.designation}</td>
                         <td class="gender">${item.gender}</td>
-                        <td class="joined-date">${item.joinedDate}</td>
-                        <td class="dob">${item.dob}</td>
+                        <td class="joined-date">${extractDate(item.joinedDate)}</td>
+                        <td class="dob">${extractDate(item.dob)}</td>
                         <td class="address">${item.addressLine1+"/ "+item.addressLine2+"/ " + item.addressLine3+"/ "+item.addressLine4 + "/ "+ item.addressLine5 }</td>
                         <td class="email">${item.email}</td>
                         <td class="role">${item.role}</td>
-                        <td class="field-list">"Nothing"</td>
+                        <td class="field-list"><button class="btn btn-outline-success"> ...</button></td>
                     </tr>
                 `;
                     // Append the new record to the table body

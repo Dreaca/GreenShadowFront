@@ -7,8 +7,23 @@
     <link rel="stylesheet" href="../../css/field.css">
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
+    <style>
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .small-card {
+            width: 300px;
+            z-index: 1000;
+        }
+        .modal{
+            z-index: 1060;
+        }
+    </style>
 </head>
 <body>
+<script src="../../js/jquery/jquery-3.7.1.min.js"></script>
 <!--Nav bar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed">
     <a class="navbar-brand" href="#">Green Shadow</a>
@@ -39,21 +54,22 @@
     </div>
 </nav>
 <!--Sidebar-->
-<<div class="sidebar">
+<div class="sidebar">
     <div class="sidebar-logo">
-        <img src="../../resources/logo.png" alt="Logo" class="logo"> <!-- Replace with your logo path -->
+        <img src="../../resources/logo.png" alt="Logo" class="logo">
         <h4>Field Management</h4>
     </div>
     <nav class="nav flex-column mt-4">
-        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-staff-member">
+        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#addFieldModal">
             Add New Field
         </button>
-        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member" data-bs-toggle="modal">
-            Delete Existing
-        </button>
-        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal" data-bs-target="#update-staff-member">
-            Modify Existing
-        </button>
+
+<!--        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member" data-bs-toggle="modal">-->
+<!--            Delete Existing-->
+<!--        </button>-->
+<!--        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal" data-bs-target="#update-staff-member">-->
+<!--            Modify Existing-->
+<!--        </button>-->
     </nav>
     <div class="logout-section mt-auto">
         <button type="button" class="btn btn-danger w-100" id="logout-btn">
@@ -61,6 +77,58 @@
         </button>
     </div>
 </div>
+<div class="main-content">
+
+</div>
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="addFieldModal" tabindex="-1" role="dialog" aria-labelledby="addFieldModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFieldModalLabel">Add New Field</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addFieldForm">
+                    <div class="form-group">
+                        <label for="fieldName">Field Name</label>
+                        <input type="text" class="form-control" id="fieldName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" class="form-control" id="location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="size">Size (acres)</label>
+                        <input type="number" class="form-control" id="size" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plantedCrop">Planted Crop</label>
+                        <input type="text" class="form-control" id="plantedCrop" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffList">Staff List</label>
+                        <textarea class="form-control" id="staffList" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image1">Upload Image 1</label>
+                        <input type="file" class="form-control-file" id="image1" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="image2">Upload Image 2</label>
+                        <input type="file" class="form-control-file" id="image2" accept="image/*">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary" id="saveFieldButton">Save Field</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
+<script src="../../js/field.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 </body>
 </html>

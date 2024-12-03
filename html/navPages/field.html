@@ -84,6 +84,7 @@
         </tbody>
     </table>
 </div>
+<!--Add Field-->
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="addFieldModal" tabindex="-1" role="dialog" aria-labelledby="addFieldModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -131,6 +132,56 @@
         </div>
     </div>
 </div>
+<!--Show Field-->
+<div class="modal fade" id="fieldModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staffModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staffModalLabel">Staff Member Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Carousel Section -->
+                <div id="staffCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="../../resources/logo.png" class="d-block w-100" alt="Staff Image 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../../resources/logo.png" class="d-block w-100" alt="Staff Image 2">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#staffCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#staffCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+                <!-- Staff Details Section -->
+                <div id="staffDetails">
+                    <p><strong>Staff ID:</strong> <span id="staffId-modal"></span></p>
+                    <p><strong>Name:</strong> <span id="staffName-modal"></span></p>
+                    <p><strong>Date of Birth:</strong> <span id="staffDOB-modal"></span></p>
+                    <p><strong>Designation:</strong> <span id="staffDesignation-modal"></span></p>
+                    <p><strong>Fields of Work:</strong></p>
+                    <ul id="fieldsList-modal"></ul>
+                    <p><strong>Equipment List:</strong></p>
+                    <ul id="equipmentList-modal"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" id="updateButton">Update</button>
+                <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
 <script type="module" src="../../js/field.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

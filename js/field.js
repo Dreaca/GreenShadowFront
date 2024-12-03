@@ -54,17 +54,23 @@ $(document).ready(function () {
             headers: {'Authorization': "Bearer " + token},
             success: function (fields) {
                 fields.map((field,index)=>{
+                    const loc = field.location;
+                    console.log(loc)
                             const fieldRecord = `
                     <tr>
                         <td class="fieldCode">${field.fieldCode}</td>
                         <td class="fieldName">${field.fieldName}</td>
-                        <td class="location">${field.location}</td>
+                        <td class="location"> x:${field.location.x} y: ${field.location.y} </td>
                         <td class="size">${field.size}</td>
-                        <td class="more"><button class="btn btn-outline-success"> ...</button></td>
+                        <td class="more"><button class="btn btn-outline-success see-field-data" data-id="${field.fieldCode}"> ...</button></td>
                     </tr>
                 `;
                     $("#field-tbody").append(fieldRecord);
                 });
+                $('.see-field-data').on('click', function() {
+                    const fieldCode = $(this).data('id');
+                    $("#fieldModal").modal("show")
+                })
                 fieldList.push(...fields)
                 console.log(fieldList);
             },

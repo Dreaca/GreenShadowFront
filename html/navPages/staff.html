@@ -345,16 +345,13 @@
     <table class="table">
         <thead class="thead" id="table-head-staff">
         <tr>
-            <th scope="col">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Designation</th>
             <th scope="col">Gender</th>
             <th scope="col">Joined Date</th>
-            <th scope="col">DOB</th>
-            <th scope="col">Address</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
-            <th scope="col">Field List</th>
+            <th scope="col">More</th>
         </tr>
         </thead>
         <tbody id="member-tbody">
@@ -362,9 +359,37 @@
         </tbody>
     </table>
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="staffModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staffModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staffModalLabel">Staff Member Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="staffDetails">
+                    <p><strong>Staff ID:</strong> <span id="staffId-modal"></span></p>
+                    <p><strong>Name:</strong> <span id="staffName-modal"></span></p>
+                    <p><strong>Date of Birth:</strong> <span id="staffDOB-modal"></span></p>
+                    <p><strong>Designation:</strong> <span id="staffDesignation-modal"></span></p>
+                    <p><strong>Fields of Work:</strong></p>
+                    <ul id="fieldsList-modal"></ul>
+                    <p><strong>Equipment List:</strong></p>
+                    <ul id="equipmentList-modal"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" id="updateButton">Update</button>
+                <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
-<script src="../../js/staff.js"></script>
+<script type="module" src="../../js/staff.js"></script>
 
 </body>
 </html>

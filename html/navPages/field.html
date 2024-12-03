@@ -8,15 +8,6 @@
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
     <style>
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .small-card {
-            width: 300px;
-            z-index: 1000;
-        }
         .modal{
             z-index: 1060;
         }
@@ -78,7 +69,20 @@
     </div>
 </div>
 <div class="main-content">
+    <table class="table">
+        <thead class="thead" id="table-head-staff">
+        <tr>
+            <th scope="col">Field Code</th>
+            <th scope="col">Name</th>
+            <th scope="col">Location</th>
+            <th scope="col">Size</th>
+            <th scope="col">More</th>
+        </tr>
+        </thead>
+        <tbody id="field-tbody">
 
+        </tbody>
+    </table>
 </div>
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="addFieldModal" tabindex="-1" role="dialog" aria-labelledby="addFieldModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -128,7 +132,7 @@
     </div>
 </div>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
-<script src="../../js/field.js"></script>
+<script type="module" src="../../js/field.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 </body>
 </html>

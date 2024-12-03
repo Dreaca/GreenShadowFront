@@ -1,3 +1,4 @@
+import {staffList} from "./db/db.js";
 $(document).ready(function () {
     const token = localStorage.getItem("authToken")
     loadTable()
@@ -33,6 +34,7 @@ $(document).ready(function () {
                     alert("Staff member added successfully!");
                     $("#add-staff-member").modal("hide"); // Close the modal
                     $("#add-staff-member form")[0].reset(); // Reset the form
+                    loadTable()
                 },
                 error: function (xhr, status, error) {
                     console.error("Error adding staff member:", xhr.responseText || status);
@@ -47,38 +49,9 @@ $(document).ready(function () {
             alert("Please enter a valid Staff ID.");
             return;
         }
-
+        searchToUpdate(staffId)
         // Fetch staff data by ID
-        $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/staff/${staffId}`, // Replace with your API endpoint
-            method: "GET",
-            headers: {
-                Authorization: "Bearer "+token
-            },
-            success: function (staff) {
-                // Populate the second modal with the fetched staff data
-                $("#firstName-up").val(staff.firstName);
-                $("#lastName-up").val(staff.lastName);
-                $("#designation-up").val(staff.designation);
-                $(`input[name="gender"][value="${staff.gender}"]`).prop("checked", true);
-                $("#joinedDate-up").val(extractDate(staff.joinedDate));
-                $("#dob-up").val(extractDate(staff.dob));
-                $("#address1-up").val(staff.addressLine1);
-                $("#address2-up").val(staff.addressLine2);
-                $("#address3-up").val(staff.addressLine3);
-                $("#address4-up").val(staff.addressLine4);
-                $("#address5-up").val(staff.addressLine5);
-                $("#contactNo-up").val(staff.contactNo);
-                $("#email-up").val(staff.email);
-                $("#role-up").val(staff.role);
-                // Open the second modal
-                $("#update-staff-member1").modal("show");
-            },
-            error: function (xhr) {
-                console.error("Error fetching staff member:", xhr.responseText);
-                alert("Staff member not found or an error occurred.");
-            }
-        });
+
     });
 
 // Handle Submit button in the second modal
@@ -129,7 +102,8 @@ $(document).ready(function () {
                 console.log("Staff member updated successfully:", response);
                 alert("Staff member updated successfully!");
                 $("#update-staff-member1").modal("hide"); // Close the modal
-                // Optionally, refresh the staff list or reset the form
+
+                loadTable()
             },
             error: function (xhr) {
                 console.error("Error updating staff member:", xhr.responseText);
@@ -189,30 +163,7 @@ $(document).ready(function () {
             alert("Invalid member ID. Please try again.");
             return;
         }
-
-        // Make an AJAX call to delete the member
-        $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/staff/${memberIdToDelete}`,
-            method: "DELETE",
-            headers: {
-                Authorization: "Bearer " + token // Ensure token is set correctly
-            },
-            success: function () {
-                alert("Member deleted successfully.");
-                $("#confirmation").modal("hide");
-                $("#delete-member").modal("hide");
-
-                // Clear search field and reset modal
-                $("#username-to-delete").val("");
-                $("#delete-id").text("ID");
-                $("#delete-name").text("Name");
-                $("#delete-designation").text("Designation");
-            },
-            error: function (xhr) {
-                console.error("Error deleting member:", xhr.responseText);
-                alert("An error occurred while deleting the member. Please try again.");
-            }
-        });
+       deleteMember(memberIdToDelete)
     });
 
     function loadTable() {
@@ -231,20 +182,35 @@ $(document).ready(function () {
                 results.map((item,index) => {
                     const record = `
                     <tr>
-                        <td class="id">${item.staffId}</td>
                         <td class="name">${item.firstName} ${item.lastName}</td>
                         <td class="designation">${item.designation}</td>
                         <td class="gender">${item.gender}</td>
                         <td class="joined-date">${extractDate(item.joinedDate)}</td>
-                        <td class="dob">${extractDate(item.dob)}</td>
-                        <td class="address">${item.addressLine1+"/ "+item.addressLine2+"/ " + item.addressLine3+"/ "+item.addressLine4 + "/ "+ item.addressLine5 }</td>
                         <td class="email">${item.email}</td>
                         <td class="role">${item.role}</td>
-                        <td class="field-list"><button class="btn btn-outline-success"> ...</button></td>
+                        <td class="field-list"><button class="btn btn-outline-success see-member-btn" data-id="${item.staffId}">...</button></td>
                     </tr>
                 `;
                     // Append the new record to the table body
                     $("#member-tbody").append(record);
+
+                });
+                staffList.push(...results);
+                console.log(staffList);
+                $('.see-member-btn').on('click', function() {
+                    const staffId = $(this).data('id');
+                    let staff ;
+                    staffList.forEach(item => {
+                        if (item.staffId === staffId) {
+                           staff = item;
+                        }
+                    })
+                    console.log(staff);
+                    $("#staffId-modal").text(`${staffId}`);
+                    $("#staffName-modal").text(`${staff.firstName} ${staff.lastName}`);
+                    $("#staffDOB-modal").text(`${extractDate(staff.dob)}`);
+                    $("#staffDesignation-modal").text(`${staff.designation}`);
+                    $("#staffModal").modal("show");
                 });
             },
             error: function (xhr) {
@@ -252,9 +218,75 @@ $(document).ready(function () {
                 alert("Failed to load staff data. Please try again later.");
             }
         });
+        $("#deleteButton").on("click",function(){
+            const deleteID = $("#staffId-modal").text()
+            deleteMember(deleteID)
+            $("#staffModal").modal("hide");
+        })
+        $("#updateButton").on("click",function(){
+            const deleteID = $("#staffId-modal").text()
+            $("#staffModal").modal("hide");
+            searchToUpdate(deleteID)
+        })
     }
+    function deleteMember(staffId){
+        $.ajax({
+            url: `http://localhost:8080/greenshadow/api/v1/staff/${staffId}`,
+            method: "DELETE",
+            headers: {
+                Authorization: "Bearer " + token // Ensure token is set correctly
+            },
+            success: function () {
+                alert("Member deleted successfully.");
+                $("#confirmation").modal("hide");
+                $("#delete-member").modal("hide");
 
-// ${item.fieldList.join(", ")}
+                // Clear search field and reset modal
+                $("#username-to-delete").val("");
+                $("#delete-id").text("ID");
+                $("#delete-name").text("Name");
+                $("#delete-designation").text("Designation");
+
+                loadTable()
+            },
+            error: function (xhr) {
+                console.error("Error deleting member:", xhr.responseText);
+                alert("An error occurred while deleting the member. Please try again.");
+            }
+        });
+    }
+    function searchToUpdate(staffId){
+        $.ajax({
+            url: `http://localhost:8080/greenshadow/api/v1/staff/${staffId}`, // Replace with your API endpoint
+            method: "GET",
+            headers: {
+                Authorization: "Bearer "+token
+            },
+            success: function (staff) {
+                // Populate the second modal with the fetched staff data
+                $("#firstName-up").val(staff.firstName);
+                $("#lastName-up").val(staff.lastName);
+                $("#designation-up").val(staff.designation);
+                $(`input[name="gender"][value="${staff.gender}"]`).prop("checked", true);
+                $("#joinedDate-up").val(extractDate(staff.joinedDate));
+                $("#dob-up").val(extractDate(staff.dob));
+                $("#address1-up").val(staff.addressLine1);
+                $("#address2-up").val(staff.addressLine2);
+                $("#address3-up").val(staff.addressLine3);
+                $("#address4-up").val(staff.addressLine4);
+                $("#address5-up").val(staff.addressLine5);
+                $("#contactNo-up").val(staff.contactNo);
+                $("#email-up").val(staff.email);
+                $("#role-up").val(staff.role);
+                // Open the second modal
+                $("#update-staff-member1").modal("show");
+            },
+            error: function (xhr) {
+                console.error("Error fetching staff member:", xhr.responseText);
+                alert("Staff member not found or an error occurred.");
+            }
+        });
+    }
 });
 
 

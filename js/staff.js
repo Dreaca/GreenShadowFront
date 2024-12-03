@@ -1,6 +1,7 @@
 import {staffList} from "./db/db.js";
 $(document).ready(function () {
     const token = localStorage.getItem("authToken")
+    let memberIdToDelete;
     loadTable()
     $("#add-new-member").on("click", function () {
         const updateMember = new FormData();
@@ -119,7 +120,7 @@ $(document).ready(function () {
 
         return `${year}-${month}-${day}`;
     }
-    let memberIdToDelete;
+
 
     // Search button click event
     // Search member button click event

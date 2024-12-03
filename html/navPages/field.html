@@ -55,17 +55,64 @@
             Add New Field
         </button>
 
-<!--        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member" data-bs-toggle="modal">-->
-<!--            Delete Existing-->
-<!--        </button>-->
-<!--        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal" data-bs-target="#update-staff-member">-->
-<!--            Modify Existing-->
-<!--        </button>-->
+        <button type="button" class="btn btn-outline-danger mb-3" id="delete-btn" data-bs-target="#delete-field" data-bs-toggle="modal">
+            Delete Existing
+        </button>
+        <button type="button" class="btn btn-outline-warning mb-3" id="update-field-btn" data-bs-toggle="modal" data-bs-target="#update-field">
+            Modify Existing
+        </button>
     </nav>
     <div class="logout-section mt-auto">
         <button type="button" class="btn btn-danger w-100" id="logout-btn">
             Logout
         </button>
+    </div>
+</div>
+<!--Delete Field-->
+<div class="modal fade" id="delete-field" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="delete-member-label">Delete a member</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Search a member to delete
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="delete-field-span">@</span>
+                    <input type="text" id="fieldCode-to-delete" class="form-control" placeholder="FieldCode" aria-label="Username" aria-describedby="delete-member-span">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-dark" id="search-field-btn"  data-bs-toggle="modal">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmation-field" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="warning">Are you sure you want to delete this field?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <center><h4 style=" color: red !important;">⚠️This process is irreversible!</h4>
+                <div class="card" style="width: 18rem;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" id="delete-fieldCode">FieldCode</li>
+                        <li class="list-group-item" id="delete-fieldName">Name</li>
+                        <li class="list-group-item" id="delete-fieldLocation">Location</li>
+                    </ul>
+                </div>
+                </center>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#delete-field" data-bs-toggle="modal">Back to search</button>
+                <button class="btn btn-outline-danger" id="delete-field-btn" >Yes</button>
+            </div>
+        </div>
     </div>
 </div>
 <div class="main-content">
@@ -117,11 +164,11 @@
                     </div>
                     <div class="form-group">
                         <label for="image1">Upload Image 1</label>
-                        <input type="file" class="form-control-file" id="image1" accept="image/*">
+                        <input type="file" class="form-control" id="image1" accept="image/*">
                     </div>
                     <div class="form-group">
                         <label for="image2">Upload Image 2</label>
-                        <input type="file" class="form-control-file" id="image2" accept="image/*">
+                        <input type="file" class="form-control" id="image2" accept="image/*">
                     </div>
                 </form>
             </div>
@@ -132,6 +179,76 @@
         </div>
     </div>
 </div>
+<!--Update Field-->
+<div class="modal fade" id="update-field" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="update-member-label">Delete a member</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Search a member to delete
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="update-field-span">@</span>
+                    <input type="text" id="fieldCode-to-update" class="form-control" placeholder="FielDCode" aria-label="Field Code" aria-describedby="delete-member-span">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-dark" id="search-field-btn-up" data-bs-target="#updateFieldModal"  data-bs-toggle="modal">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="updateFieldModal" tabindex="-1" role="dialog" aria-labelledby="addFieldModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateField">Update  Field</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateFieldForm">
+                    <div class="form-group">
+                        <label for="fieldName-up">Field Name</label>
+                        <input type="text" class="form-control" id="fieldName-up" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location-up">Location</label>
+                        <input type="text" class="form-control" id="location-up" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="size-up">Size (acres)</label>
+                        <input type="number" class="form-control" id="size-up" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plantedCrop-up">Planted Crop</label>
+                        <input type="text" class="form-control" id="plantedCrop-up" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffList-up">Staff List</label>
+                        <textarea class="form-control" id="staffList-up" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image1-up">Upload Image 1</label>
+                        <input type="file" class="form-control" id="image1-up" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="image2-up">Upload Image 2</label>
+                        <input type="file" class="form-control" id="image2-up" accept="image/*">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary" id="updateField-btn">Save Field</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--Show Field-->
 <div class="modal fade" id="fieldModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staffModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -145,10 +262,10 @@
                 <div id="staffCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="../../resources/logo.png" class="d-block w-100" alt="Staff Image 1">
+                            <img id="fieldImage1" src="../../resources/logo.png" class="d-block w-100" alt="Staff Image 1">
                         </div>
                         <div class="carousel-item">
-                            <img src="../../resources/logo.png" class="d-block w-100" alt="Staff Image 2">
+                            <img id="fieldImage2" src="../../resources/logo.png" class="d-block w-100" alt="Staff Image 2">
                         </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#staffCarousel" data-bs-slide="prev">
@@ -162,13 +279,13 @@
                 </div>
 
                 <!-- Staff Details Section -->
-                <div id="staffDetails">
-                    <p><strong>Staff ID:</strong> <span id="staffId-modal"></span></p>
-                    <p><strong>Name:</strong> <span id="staffName-modal"></span></p>
-                    <p><strong>Date of Birth:</strong> <span id="staffDOB-modal"></span></p>
-                    <p><strong>Designation:</strong> <span id="staffDesignation-modal"></span></p>
-                    <p><strong>Fields of Work:</strong></p>
-                    <ul id="fieldsList-modal"></ul>
+                <div id="fieldDetails">
+                    <p><strong>Field Code:</strong> <span id="fieldCode-modal"></span></p>
+                    <p><strong>Name:</strong> <span id="fieldName-modal"></span></p>
+                    <p><strong>location:</strong> <span id="location-modal"></span></p>
+                    <p><strong>size:</strong> <span id="size-modal"></span></p>
+                    <p><strong>Worker List:</strong></p>
+                    <ul id="workerList-modal"></ul>
                     <p><strong>Equipment List:</strong></p>
                     <ul id="equipmentList-modal"></ul>
                 </div>

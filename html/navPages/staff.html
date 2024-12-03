@@ -14,7 +14,8 @@
 <!-- Navbar (Fixed Top) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed">
     <a class="navbar-brand" href="staff.html">Green Shadow</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -42,19 +43,23 @@
 </nav>
 
 <!-- Sidebar -->
-<<div class="sidebar">
+<
+<div class="sidebar">
     <div class="sidebar-logo">
         <img src="../../resources/logo.png" alt="Logo" class="logo"> <!-- Replace with your logo path -->
         <h4>Staff Management</h4>
     </div>
     <nav class="nav flex-column mt-4">
-        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-staff-member">
+        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal"
+                data-bs-target="#add-staff-member">
             Add New Staff Member
         </button>
-        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member" data-bs-toggle="modal">
+        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member"
+                data-bs-toggle="modal">
             Delete Existing
         </button>
-        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal" data-bs-target="#update-staff-member">
+        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal"
+                data-bs-target="#update-staff-member">
             Update Existing
         </button>
     </nav>
@@ -67,7 +72,8 @@
 
 
 <!-- Add Staff Member -->
-<div class="modal fade" id="add-staff-member" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="add-staff-member" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -83,28 +89,34 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="firstName" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                                        <input type="text" class="form-control" id="firstName"
+                                               placeholder="Enter your first name" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="lastName" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                                        <input type="text" class="form-control" id="lastName"
+                                               placeholder="Enter your last name" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="designation" class="form-label">Designation</label>
-                                        <input type="text" class="form-control" id="designation" placeholder="Enter your designation" required>
+                                        <input type="text" class="form-control" id="designation"
+                                               placeholder="Enter your designation" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label class="form-label">Gender</label><br>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="male" value="male">
+                                            <input class="form-check-input" type="radio" name="gender" id="male"
+                                                   value="male">
                                             <label class="form-check-label" for="male">Male</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                            <input class="form-check-input" type="radio" name="gender" id="female"
+                                                   value="female">
                                             <label class="form-check-label" for="female">Female</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="other" value="other">
+                                            <input class="form-check-input" type="radio" name="gender" id="other"
+                                                   value="other">
                                             <label class="form-check-label" for="other">Other</label>
                                         </div>
                                     </div>
@@ -122,31 +134,38 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="address1" class="form-label">Address Line 1</label>
-                                        <input type="text" class="form-control" id="address1" placeholder="Enter address line 1" required>
+                                        <input type="text" class="form-control" id="address1"
+                                               placeholder="Enter address line 1" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="address2" class="form-label">Address Line 2</label>
-                                        <input type="text" class="form-control" id="address2" placeholder="Enter address line 2">
+                                        <input type="text" class="form-control" id="address2"
+                                               placeholder="Enter address line 2">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="address3" class="form-label">Address Line 3</label>
-                                        <input type="text" class="form-control" id="address3" placeholder="Enter address line 3">
+                                        <input type="text" class="form-control" id="address3"
+                                               placeholder="Enter address line 3">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="address4" class="form-label">Address Line 4</label>
-                                        <input type="text" class="form-control" id="address4" placeholder="Enter address line 4">
+                                        <input type="text" class="form-control" id="address4"
+                                               placeholder="Enter address line 4">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="address5" class="form-label">Address Line 5</label>
-                                        <input type="text" class="form-control" id="address5" placeholder="Enter address line 5">
+                                        <input type="text" class="form-control" id="address5"
+                                               placeholder="Enter address line 5">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="contactNo" class="form-label">Contact Number</label>
-                                        <input type="text" class="form-control" id="contactNo" placeholder="Enter contact number" required>
+                                        <input type="text" class="form-control" id="contactNo"
+                                               placeholder="Enter contact number" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                        <input type="email" class="form-control" id="email"
+                                               placeholder="Enter your email" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="role" class="form-label">Role</label>
@@ -171,7 +190,8 @@
     </div>
 </div>
 <!--Update Staff Member-->
-<div class="modal fade" id="update-staff-member" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+<div class="modal fade" id="update-staff-member" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+     tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -179,17 +199,21 @@
             </div>
             <div class="modal-body">
                 <div class="input-group flex-nowrap">
-                    <span class="input-group-text" >@</span>
-                    <input type="text" id="update-member" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="update-member">
+                    <span class="input-group-text">@</span>
+                    <input type="text" id="update-member" class="form-control" placeholder="Username"
+                           aria-label="Username" aria-describedby="update-member">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline-dark" id="search-up" data-bs-target="#update-staff-member1" data-bs-toggle="modal">Search Member</button>
+                <button class="btn btn-outline-dark" id="search-up" data-bs-target="#update-staff-member1"
+                        data-bs-toggle="modal">Search Member
+                </button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="update-staff-member1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="update-staff-member1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -205,28 +229,34 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="firstName-up" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="firstName-up" placeholder="Enter your first name" required>
+                                        <input type="text" class="form-control" id="firstName-up"
+                                               placeholder="Enter your first name" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="lastName-up" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="lastName-up" placeholder="Enter your last name" required>
+                                        <input type="text" class="form-control" id="lastName-up"
+                                               placeholder="Enter your last name" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="designation-up" class="form-label">Designation</label>
-                                        <input type="text" class="form-control" id="designation-up" placeholder="Enter your designation" required>
+                                        <input type="text" class="form-control" id="designation-up"
+                                               placeholder="Enter your designation" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label class="form-label">Gender</label><br>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="male-up" value="MALE">
+                                            <input class="form-check-input" type="radio" name="gender" id="male-up"
+                                                   value="MALE">
                                             <label class="form-check-label" for="male-up">Male</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="female-up" value="FEMALE">
+                                            <input class="form-check-input" type="radio" name="gender" id="female-up"
+                                                   value="FEMALE">
                                             <label class="form-check-label" for="female-up">Female</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender" id="other-up" value="OTHER">
+                                            <input class="form-check-input" type="radio" name="gender" id="other-up"
+                                                   value="OTHER">
                                             <label class="form-check-label" for="other-up">Other</label>
                                         </div>
                                     </div>
@@ -244,31 +274,38 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="address1-up" class="form-label">Address Line 1</label>
-                                        <input type="text" class="form-control" id="address1-up" placeholder="Enter address line 1" required>
+                                        <input type="text" class="form-control" id="address1-up"
+                                               placeholder="Enter address line 1" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="address2-up" class="form-label">Address Line 2</label>
-                                        <input type="text" class="form-control" id="address2-up" placeholder="Enter address line 2">
+                                        <input type="text" class="form-control" id="address2-up"
+                                               placeholder="Enter address line 2">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="address3-up" class="form-label">Address Line 3</label>
-                                        <input type="text" class="form-control" id="address3-up" placeholder="Enter address line 3">
+                                        <input type="text" class="form-control" id="address3-up"
+                                               placeholder="Enter address line 3">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="address4-up" class="form-label">Address Line 4</label>
-                                        <input type="text" class="form-control" id="address4-up" placeholder="Enter address line 4">
+                                        <input type="text" class="form-control" id="address4-up"
+                                               placeholder="Enter address line 4">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="address5-up" class="form-label">Address Line 5</label>
-                                        <input type="text" class="form-control" id="address5-up" placeholder="Enter address line 5">
+                                        <input type="text" class="form-control" id="address5-up"
+                                               placeholder="Enter address line 5">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="contactNo-up" class="form-label">Contact Number</label>
-                                        <input type="text" class="form-control" id="contactNo-up" placeholder="Enter contact number" required>
+                                        <input type="text" class="form-control" id="contactNo-up"
+                                               placeholder="Enter contact number" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="email-up" class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" id="email-up" placeholder="Enter your email" required>
+                                        <input type="email" class="form-control" id="email-up"
+                                               placeholder="Enter your email" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="role-up" class="form-label">Role</label>
@@ -288,7 +325,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" id="update-member-btn" class="btn btn-outline-primary">Submit</button>
-                <button class="btn btn-primary" data-bs-target="#update-staff-member" data-bs-toggle="modal">Back to search</button>
+                <button class="btn btn-primary" data-bs-target="#update-staff-member" data-bs-toggle="modal">Back to
+                    search
+                </button>
             </div>
         </div>
     </div>
@@ -306,11 +345,14 @@
                 Search a member to delete
                 <div class="input-group flex-nowrap">
                     <span class="input-group-text" id="delete-member-span">@</span>
-                    <input type="text" id="username-to-delete" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="delete-member-span">
+                    <input type="text" id="username-to-delete" class="form-control" placeholder="Username"
+                           aria-label="Username" aria-describedby="delete-member-span">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline-dark" id="search-member-btn" data-bs-target="#confirmation" data-bs-toggle="modal">Search</button>
+                <button class="btn btn-outline-dark" id="search-member-btn" data-bs-target="#confirmation"
+                        data-bs-toggle="modal">Search
+                </button>
             </div>
         </div>
     </div>
@@ -323,18 +365,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                This process is irreversable!
-                <div class="card" style="width: 18rem;">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item" id="delete-id">ID</li>
-                        <li class="list-group-item" id="delete-name">Name</li>
-                        <li class="list-group-item" id="delete-designation">Designation</li>
-                    </ul>
-                </div>
+                <center>
+                    <h4 style=" color: red !important;">⚠️This process is irreversible!</h4>
+                    <div class="card" style="width: 18rem;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" id="delete-id">ID</li>
+                            <li class="list-group-item" id="delete-name">Name</li>
+                            <li class="list-group-item" id="delete-designation">Designation</li>
+                        </ul>
+                    </div>
+                </center>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" data-bs-target="#delete-member" data-bs-toggle="modal">Back to search</button>
-                <button class="btn btn-outline-danger" id="delete-member-btn" >Yes</button>
+                <button class="btn btn-primary" data-bs-target="#delete-member" data-bs-toggle="modal">Back to search
+                </button>
+                <button class="btn btn-outline-danger" id="delete-member-btn">Yes</button>
             </div>
         </div>
     </div>
@@ -360,7 +405,8 @@
     </table>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="staffModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staffModalLabel" aria-hidden="true">
+<div class="modal fade" id="staffModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+     aria-labelledby="staffModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">

@@ -10,6 +10,7 @@
     <title>Vehicle</title>
 </head>
 <body>
+<script src="../../js/jquery/jquery-3.7.1.min.js"></script>
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed">
   <a class="navbar-brand" href="#">Green Shadow</a>
@@ -39,20 +40,20 @@
     </ul>
   </div>
 </nav>
-<!--Side bar-->
+<!--Sidebar-->
 <<div class="sidebar">
   <div class="sidebar-logo">
-    <img src="../../resources/logo.png" alt="Logo" class="logo"> <!-- Replace with your logo path -->
+    <img src="../../resources/logo.png" alt="Logo" class="logo">
     <h4>Vehicle Management</h4>
   </div>
   <nav class="nav flex-column mt-4">
-    <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-staff-member">
+    <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-vehicle">
       Add New Vehicle
     </button>
-    <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member" data-bs-toggle="modal">
+    <button type="button" class="btn btn-outline-danger mb-3" id="delete-vehicle-btn" data-bs-target="#delete-vehicle" data-bs-toggle="modal">
       Delete Existing
     </button>
-    <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal" data-bs-target="#update-staff-member">
+    <button type="button" class="btn btn-outline-warning mb-3" id="update-vehicle-btn" data-bs-toggle="modal" data-bs-target="#update-vehicle">
       Modify Existing
     </button>
   </nav>
@@ -62,6 +63,166 @@
     </button>
   </div>
 </div>
+<!--Main Content-->
+<div class="main-content">
+  <table class="table">
+    <thead class="thead" id="table-head-vehicles">
+    <tr>
+      <th scope="col">License Plate No</th>
+      <th scope="col">Category</th>
+      <th scope="col">Fuel Type</th>
+      <th scope="col">Status</th>
+      <th scope="col">More</th>
+    </tr>
+    </thead>
+    <tbody id="vehicle-tbody">
+
+    </tbody>
+  </table>
+</div>
+<!--Detail Modal-->
+<div class="modal fade" id="vehicle-detail-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="vehicle-detail-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="vehicle-detail-label">Staff Member Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="vehicle-detail">
+          <p><strong>Vehicle Code:</strong> <span id="vehicle-code-modal"></span></p>
+          <p><strong>License Plate No:</strong> <span id="license-plate-modal"></span></p>
+          <p><strong>Category:</strong> <span id="category-modal"></span></p>
+          <p><strong>Fuel Type:</strong> <span id="fuel-type-modal"></span></p>
+          <p><strong>Status:</strong> <span id="vehicle-status-modal"></span></p>
+          <p><strong>Allocated Staff :</strong></p>
+          <ul id="staff-list-equipment-modal"></ul>
+          <p><strong>Remarks :</strong> <span id="remarks-modal"></span></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning" id="update-vehicle-btn-modal">Update</button>
+        <button type="button" class="btn btn-danger" id="delete-vehicle-btn-modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Vehicle-->
+<div class="modal fade" id="delete-vehicle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="delete-vehicle-label">Delete a vehicle</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Search a vehicle to delete
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text" id="delete-vehicle-span">@</span>
+          <input type="text" id="vehicle-to-delete" class="form-control" placeholder="Equipment Code" aria-label="EquipmentCode" aria-describedby="delete-vehicle-span">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-dark" id="search-vehicle-btn"  data-bs-toggle="modal">Search</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmation-vehicle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="warning">Are you sure you want to delete this Vehicle?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <center><h4 style=" color: red !important;">⚠️This process is irreversible!</h4>
+          <div class="card" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" id="delete-vehicle-code">Equipment Code</li>
+              <li class="list-group-item" id="delete-licensePlateNo">License Plate No</li>
+              <li class="list-group-item" id="delete-fuel-type">Fuel Type</li>
+              <li class="list-group-item" id="delete-category">Category</li>
+              <li class="list-group-item" id="delete-vehicle-status">Status</li>
+            </ul>
+          </div>
+        </center>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#delete-vehicle" data-bs-toggle="modal">Back to search</button>
+        <button class="btn btn-outline-danger" id="delete-vehicle-confirm-btn" >Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Update Vehicle-->
+<div class="modal fade" id="update-vehicle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="update-vehicle-label">Update Vehicle</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Search a vehicle to update
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text" id="update-vehicle-span">@</span>
+          <input type="text" id="vehicle-to-update" class="form-control" placeholder="Vehicle Code" aria-label="Vehicle-Code" aria-describedby="update-vehicle-span">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-dark" id="search-vehicle-btn-up" data-bs-target="#update-vehicle-modal"  data-bs-toggle="modal">Search</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="update-vehicle-modal" tabindex="-1" role="dialog" aria-labelledby="update-vehicle-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="update-vehicle-modal-label">Update  Field</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="update-vehicle-form">
+          <div class="form-group">
+            <label for="update-license-plate">License Plate No</label>
+            <input type="text" class="form-control" id="update-license-plate" required>
+          </div>
+          <div class="form-group">
+            <label for="update-category">Type/Category</label>
+            <input type="text" class="form-control" id="update-category" required>
+          </div>
+          <div class="form-group">
+            <label for="update-fuel-type">Fuel Type</label>
+            <input type="number" class="form-control" id="update-fuel-type" required>
+          </div>
+          <div class="form-group">
+            <label for="update-vehicle-status">Fuel Type</label>
+            <input type="number" class="form-control" id="update-vehicle-status" required>
+          </div>
+          <div class="form-group">
+            <label for="update-allocated-staff">Staff List</label>
+            <textarea class="form-control" id="update-allocated-staff" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="update-remarks">Remarks</label>
+            <textarea class="form-control" id="update-remarks" rows="3" placeholder="Enter Remarks"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" id="update-vehicle-confirm-btn">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module" src="../../js/vehicle.js"></script>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

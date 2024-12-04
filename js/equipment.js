@@ -30,7 +30,7 @@ $(document).ready(function() {
     })
 
     function loadEquipment(){
-        $("crop-tbody").empty();
+        $("#equipment-tbody").empty();
         $.ajax({
             url:'http://localhost:8080/greenshadow/api/v1/equipment',
             method:'GET',
@@ -47,7 +47,7 @@ $(document).ready(function() {
                     <td class="equipment-more"><button class="btn-outline-info see-more-equipment" data-id="${item.equipmentCode}">...</button</td>
                     </tr>
                     `;
-                    $("crop-tbody").append(cropRecord);
+                    $("#equipment-tbody").append(cropRecord);
                 })
                 equipmentList.push(...equipments)
                 $('.see-more-equipment').on('click', function(){
@@ -57,7 +57,7 @@ $(document).ready(function() {
                             $("#equipment-code-modal").text(equipCode)
                             $("#equipment-name-modal").text(item.commonName)
                             $("#equipment-type-modal").text(item.scientificName)
-                            $("#equipment-status-modal").text(item.category)
+                            $("#equipment-status-modal").text(item.status)
                             //TODO : Load the lists here
                         }
                     })

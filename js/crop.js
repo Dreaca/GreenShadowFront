@@ -48,12 +48,12 @@ $(document).ready(function(){
         });
         $("#deleteButton").on("click", function () {
             let cropCode = $("#cropCode-modal").text()
-            $("#cropCode-modal").modal("hide");
+            $("#crop-details-modal").modal("hide");
             searchToDelete(cropCode)
         })
         $("updateButton").on("click",function (){
             let cropCode = $("#cropCode-modal").text()
-            $("#cropCode-modal").modal("hide");
+            $("#crop-details-modal").modal("hide");
             searchToUpdate(cropCode)
         })
     }

@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Logs</title>
-    meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Management</title>
     <link rel="stylesheet" href="../../css/bootsrap/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
 </head>
 <body>
+<script src="../../js/jquery/jquery-3.7.1.min.js"></script>
 <nav>
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed">
         <a class="navbar-brand" href="staff.html">Green Shadow</a>
@@ -40,20 +41,21 @@
         </div>
     </nav>
 </nav>
+<!--Sidebar-->
 <<div class="sidebar">
     <div class="sidebar-logo">
         <img src="../../resources/logo.png" alt="Logo" class="logo"> <!-- Replace with your logo path -->
         <h4>Logs Management</h4>
     </div>
     <nav class="nav flex-column mt-4">
-        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-staff-member">
-           Add new log
+        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-new-log">
+          ➕ Add new log
         </button>
-        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member" data-bs-toggle="modal">
-            Delete Existing
+        <button type="button" class="btn btn-outline-danger mb-3" id="delete-log" data-bs-target="#delete-log-modal" data-bs-toggle="modal">
+           🗑️ Delete Existing
         </button>
-        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal" data-bs-target="#update-staff-member">
-            Update Existing
+        <button type="button" class="btn btn-outline-warning mb-3" id="update-log" data-bs-toggle="modal" data-bs-target="#update-log-modal">
+           📝 Update Existing
         </button>
     </nav>
     <div class="logout-section mt-auto">
@@ -62,6 +64,102 @@
         </button>
     </div>
 </div>
+<!--Main Content-->
+<div class="main-content">
+    <table class="table">
+        <thead class="thead" id="table-head-log">
+        <tr>
+            <th scope="col">Log Code</th>
+            <th scope="col">Date</th>
+            <th scope="col">Field</th>
+            <th scope="col">Crop</th>
+            <th scope="col">More</th>
+        </tr>
+        </thead>
+        <tbody id="log-tbody">
+
+        </tbody>
+    </table>
+</div>
+<!--Show Details-->
+<div class="modal fade" id="log-details-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="log-details-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="log-detail-modal-label">Crop Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Carousel Section -->
+                <div class="d-flex justify-content-center mb-4">
+                    <img id="log-Image-pre" src="../../resources/logo.png" class="img-thumbnail" alt="Field Image" style="height: 200px; width: 300px; object-fit: cover;">
+                </div>
+
+                <!-- Staff Details Section -->
+                <div id="log-details">
+                    <p><strong>Log Code:</strong> <span id="log-code-modal"></span></p>
+                    <p><strong>Date :</strong> <span id="log-date-modal"></span></p>
+                    <p><strong>Observation:</strong> <span id="observation-modal"></span></p>
+                    <p><strong>Field :</strong> <span id="field-modal"></span></p>
+                    <p><strong>Crop :</strong> <span id="crop-modal"></span></p>
+                    <p><strong>Staff List:</strong></p>
+                    <ul id="staff-list-modal"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌Close</button>
+                <button type="button" class="btn btn-warning" id="log-update-btn-modal">📝Edit</button>
+                <button type="button" class="btn btn-danger" id="log-delete-btn-modal">🗑️Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Add new log-->
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="add-new-log" tabindex="-1" role="dialog" aria-labelledby="add-log-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-log-modal-label">Add New Log</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-log-form">
+                    <div class="form-group">
+                        <label for="add-log-date">Select Date</label>
+                        <input type="date" class="form-control" id="add-log-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-log-observation">Observation</label>
+                        <input type="text" class="form-control" id="add-log-observation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-log-field">Field </label>
+                        <select class="form-control" id="add-log-field" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-log-crop">Crop</label>
+                        <select class="form-control" id="add-log-crop"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="log-staff-list">Staff List</label>
+                        <textarea class="form-control" id="log-staff-list" rows="3" placeholder="Enter field names separated by commas"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="log-image">Upload Image </label>
+                        <input type="file" class="form-control" id="log-image" accept="image/*">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary" id="save-crop-button">Save Log Data</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!---->
+<script type="module" src="../../js/log.js"></script>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

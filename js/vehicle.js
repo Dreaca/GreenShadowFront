@@ -6,7 +6,7 @@ $(document).ready(function(){
     $("#update-vehicle-confirm-btn").on("click", function(){
         updateVehicle(vehicleCodeForUsage);
     })
-    $("#update-vehicle-btn").on("click", function(){
+    $("#search-vehicle-btn-up").on("click", function(){
         const vCode = $("#vehicle-to-update").val().trim()
         vehicleCodeForUsage = vCode
         if(!vCode){
@@ -14,7 +14,7 @@ $(document).ready(function(){
         }
         searchToUpdate(vCode)
     })
-    $("#delete-vehicle-btn").on("click", function(){
+    $("#search-vehicle-btn").on("click", function(){
         const vCode = $("#vehicle-to-delete").val().trim()
         vehicleCodeForUsage = vCode
         if(!vCode){

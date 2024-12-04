@@ -1,6 +1,6 @@
-import {fieldList} from "./db/db.js";
+import {fieldList,token} from "./db/db.js";
 $(document).ready(function () {
-    let token = localStorage.getItem('authToken');
+    // let token = localStorage.getItem('authToken');
     loadFields()
     let fieldIdForUsage; //Using for general functions
 

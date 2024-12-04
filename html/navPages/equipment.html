@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../css/sidebar.css">
 </head>
 <body>
+<script src="../../js/jquery/jquery-3.7.1.min.js"></script>
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed">
     <a class="navbar-brand" href="#">Green Shadow</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,17 +41,17 @@
 <!--sidebar-->
 <<div class="sidebar">
     <div class="sidebar-logo">
-        <img src="../../resources/logo.png" alt="Logo" class="logo"> <!-- Replace with your logo path -->
+        <img src="../../resources/logo.png" alt="Logo" class="logo">
         <h4>Equipment Management</h4>
     </div>
     <nav class="nav flex-column mt-4">
-        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-staff-member">
+        <button type="button" class="btn btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#add-equipment">
             Add New Equipment
         </button>
-        <button type="button" class="btn btn-outline-danger mb-3" id="delete-staff" data-bs-target="#delete-member" data-bs-toggle="modal">
+        <button type="button" class="btn btn-outline-danger mb-3" id="delete-equipment-btn" data-bs-target="#delete-equipment" data-bs-toggle="modal">
             Delete Existing
         </button>
-        <button type="button" class="btn btn-outline-warning mb-3" id="update-staff" data-bs-toggle="modal" data-bs-target="#update-staff-member">
+        <button type="button" class="btn btn-outline-warning mb-3" id="update-equipment-btn" data-bs-toggle="modal" data-bs-target="#update-equipment">
             Modify Existing
         </button>
     </nav>
@@ -60,6 +61,160 @@
         </button>
     </div>
 </div>
+<!--Main Content-->
+<div class="main-content">
+    <table class="table">
+        <thead class="thead" id="table-head-equipment">
+        <tr>
+            <th scope="col">Equipment Code</th>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Status</th>
+            <th scope="col">More</th>
+        </tr>
+        </thead>
+        <tbody id="equipment-tbody">
+
+        </tbody>
+    </table>
+</div>
+<!--Show Modal-->
+<div class="modal fade" id="equipment-detail-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="equipment-detail-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="equipment-detail-label">Staff Member Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="equipment-detail">
+                    <p><strong>Equipment Code:</strong> <span id="equipment-code-modal"></span></p>
+                    <p><strong>Name:</strong> <span id="equipment-name-modal"></span></p>
+                    <p><strong>Type:</strong> <span id="equipment-type-modal"></span></p>
+                    <p><strong>Status:</strong> <span id="equipment-status-modal"></span></p>
+                    <p><strong>Responsible List:</strong></p>
+                    <ul id="staff-list-equipment-modal"></ul>
+                    <p><strong>Field List:</strong></p>
+                    <ul id="field-list-equipment-modal"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" id="update-equipment-btn-modal">Update</button>
+                <button type="button" class="btn btn-danger" id="delete-equipment-btn-modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Update Equipment-->
+<div class="modal fade" id="update-equipment" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="update-equipment-label">Update Equipment</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Search a equipment to update
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="update-equipment-span">@</span>
+                    <input type="text" id="equipment-to-update" class="form-control" placeholder="Equipment Code" aria-label="Equipment-Code" aria-describedby="update-equipment-span">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-dark" id="search-equipment-btn-up" data-bs-target="#update-equipment-modal"  data-bs-toggle="modal">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="update-equipment-modal" tabindex="-1" role="dialog" aria-labelledby="addFieldModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="update-equipment-modal-label">Update  Field</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="update-equipment-form">
+                    <div class="form-group">
+                        <label for="update-equipment-name">Equipment Name</label>
+                        <input type="text" class="form-control" id="update-equipment-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-equipment-type">Type</label>
+                        <input type="text" class="form-control" id="update-equipment-type" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-equipment-status">Status</label>
+                        <input type="number" class="form-control" id="update-equipment-status" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-equipment-staff">Staff List</label>
+                        <textarea class="form-control" id="update-equipment-staff" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-equipment-field">Field List</label>
+                        <textarea class="form-control" id="update-equipment-field" rows="3" placeholder="Enter field names separated by commas"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary" id="update-equipment-confirm-btn">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Delete Equipment-->
+<div class="modal fade" id="delete-equipment" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="delete-equipment-label">Delete an equipment</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Search an equipment to delete
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="delete-equipment-span">@</span>
+                    <input type="text" id="equipment-to-delete" class="form-control" placeholder="Equipment Code" aria-label="EquipmentCode" aria-describedby="delete-equipment-span">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-dark" id="search-equipment-btn"  data-bs-toggle="modal">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmation-equipment" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="warning">Are you sure you want to delete this Equipment?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <center><h4 style=" color: red !important;">⚠️This process is irreversible!</h4>
+                    <div class="card" style="width: 18rem;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" id="delete-equipment-code">Equipment Code</li>
+                            <li class="list-group-item" id="delete-equipment-name">Name</li>
+                            <li class="list-group-item" id="delete-equipment-status">Status</li>
+                        </ul>
+                    </div>
+                </center>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#delete-equipment" data-bs-toggle="modal">Back to search</button>
+                <button class="btn btn-outline-danger" id="delete-equipment-confirm-btn" >Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" src="../../js/equipment.js"></script>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

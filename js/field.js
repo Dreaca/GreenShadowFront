@@ -2,8 +2,9 @@ import {fieldList} from "./db/db.js";
 $(document).ready(function () {
     let token = localStorage.getItem('authToken');
     loadFields()
-    let fieldIdForUsage;
+    let fieldIdForUsage; //Using for general functions
 
+    //SAVE FIELD
     document.getElementById('saveFieldButton').addEventListener('click', function () {
 
         const fieldName = document.getElementById('fieldName').value;
@@ -12,31 +13,29 @@ $(document).ready(function () {
         const plantedCrop = document.getElementById('plantedCrop').value;
         const staffList = document.getElementById('staffList').value.split(',').map(name => name.trim());
 
-        // Handle image uploads
         const image1 = document.getElementById('image1').files[0];
         const image2 = document.getElementById('image2').files[0];
 
-        // Prepare data to send to the backend
+
         const formData = new FormData();
         formData.append('fieldName', fieldName);
         formData.append('location', location);
         formData.append('size', size);
         formData.append('plantedCrop', plantedCrop);
-        formData.append('staffList', JSON.stringify(staffList)); // Convert staff list to a JSON string
+        formData.append('staffList', JSON.stringify(staffList));
         if (image1) formData.append('image1', image1);
         if (image2) formData.append('image2', image2);
 
-        // Send the data to the backend using AJAX
         $.ajax({
-            url: 'http://localhost:8080/greenshadow/api/v1/field', // Replace with your actual backend URL
+            url: 'http://localhost:8080/greenshadow/api/v1/field',
             type: 'POST',
             data: formData,
-            contentType: false, // Important: Set content type to false
+            contentType: false,
             processData: false,
             headers: {'Authorization': "Bearer " + token},
             success: function (data) {
                 console.log('Success:', data);
-                // Close the modal after saving
+
                 $('#addFieldModal').modal('hide');
             },
             error: function (xhr, status, error) {
@@ -97,13 +96,11 @@ $(document).ready(function () {
                 `;
 
                 fieldList.push(...fields)
-                console.log(fieldList);
                     $("#field-tbody").append(fieldRecord);
                 });
                 $('.see-field-data').on('click', function() {
                     const fieldCode = $(this).data('id');
                     fieldList.forEach(item => {
-                        console.log(item.location)
                         if (item.fieldCode === fieldCode) {
                             $("#fieldCode-modal").text(item.fieldCode)
                             $("#fieldName-modal").text(item.fieldName)
@@ -122,9 +119,14 @@ $(document).ready(function () {
 
         });
         $("#deleteButton").on("click", function () {
-            let fieldCode = $("#fieldCode-modal").text()
+            let fieldCode = $("#fieldCode-modal").text();
             $("#fieldModal").modal("hide")
             searchToDelete(fieldCode)
+        })
+        $("#updateButton").on("click",function (){
+            let fieldCode = $("#fieldCode-modal").text();
+            $("#fieldModal").modal("hide")
+            searchToUpdate(fieldCode)
         })
     }
     function deleteField(fieldCode){
@@ -156,30 +158,29 @@ $(document).ready(function () {
         const plantedCrop = document.getElementById('plantedCrop-up').value;
         const staffList = document.getElementById('staffList-up').value.split(',').map(name => name.trim());
 
-        // Handle image uploads
+
         const image1 = document.getElementById('image1-up').files[0];
         const image2 = document.getElementById('image2-up').files[0];
 
-        // Prepare data to send to the backend
         const formData = new FormData();
         formData.append('fieldName', fieldName);
         formData.append('location', location);
         formData.append('size', size);
         formData.append('plantedCrop', plantedCrop);
-        formData.append('staffList', JSON.stringify(staffList)); // Convert staff list to a JSON string
+        formData.append('staffList', JSON.stringify(staffList));
         if (image1) formData.append('image1', image1);
         if (image2) formData.append('image2', image2);
 
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`, // Replace with your actual backend URL
+            url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`,
             type: 'PUT',
             data: formData,
-            contentType: false, // Important: Set content type to false
+            contentType: false,
             processData: false,
             headers: {'Authorization': "Bearer " + token},
             success: function (data) {
                 console.log('Success:', data);
-                // Close the modal after saving
+
                 $('#updateFieldModal').modal('hide');
             },
             error: function (xhr, status, error) {
@@ -189,25 +190,25 @@ $(document).ready(function () {
     }
     function searchToUpdate(fieldCode){
         fieldIdForUsage = fieldCode
-        // On receiving data from the backend
+
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/fields/${fieldCode}`, // Adjust endpoint
+            url: `http://localhost:8080/greenshadow/api/v1/fields/${fieldCode}`,
             method: "GET",
             headers: {
                 Authorization: "Bearer " + token
             },
             success: function (data) {
-                // Populate form fields
+
                 $("#fieldName-up").val(data.fieldName);
                 $("#location-up").val(data.location);
                 $("#size-up").val(data.size);
                 $("#plantedCrop-up").val(data.plantedCrop);
                 $("#staffList-up").val(data.staffList.join(", "));
 
-                // Remove old previews
+
                 $(".img-thumbnail").remove();
 
-                // Add image previews
+
                 if (data.images && data.images.length > 0) {
                     const imgPreview1 = $('<img>', {
                         src: data.images[0],
@@ -228,7 +229,7 @@ $(document).ready(function () {
                     }
                 }
 
-                // Show the modal
+
                 $("#updateFieldForm").modal("show");
             },
             error: function (xhr) {
@@ -241,18 +242,18 @@ $(document).ready(function () {
     function searchToDelete(fieldCode){
         fieldIdForUsage = fieldCode
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`, // Replace with your API endpoint
+            url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`,
             method: "GET",
             headers: {
-                Authorization: "Bearer " + token // Ensure token is set correctly
+                Authorization: "Bearer " + token
             },
             success: function (data) {
-                // Populate the confirmation modal with field data
+
                 $("#delete-fieldCode").text(`ID: ${data.fieldCode}`);
                 $("#delete-fieldName").text(`Name: ${data.fieldName}`);
                 $("#delete-fieldLocation").text(`Location: ${data.location.x}, ${data.location.y}`);
 
-                // Show the confirmation modal
+
                 $("#confirmation-field").modal("show");
             },
             error: function (xhr) {

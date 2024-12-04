@@ -28,13 +28,13 @@ $(document).ready(function () {
                 contentType: false,
                 data: updateMember,
                 headers: {
-                    'Authorization': 'Bearer ' + token // Include the Bearer token in the Authorization header
+                    'Authorization': 'Bearer ' + token
                 },
                 success: function (response) {
                     console.log("Staff member added successfully:", response);
                     alert("Staff member added successfully!");
-                    $("#add-staff-member").modal("hide"); // Close the modal
-                    $("#add-staff-member form")[0].reset(); // Reset the form
+                    $("#add-staff-member").modal("hide");
+                    $("#add-staff-member form")[0].reset();
                     loadTable()
                 },
                 error: function (xhr, status, error) {
@@ -51,11 +51,11 @@ $(document).ready(function () {
             return;
         }
         searchToUpdate(staffId)
-        // Fetch staff data by ID
+
 
     });
 
-// Handle Submit button in the second modal
+// Handle Submit button i
     $("#update-member-btn").on("click", function () {
         const staffId = $("#update-member").val().trim();
 
@@ -64,7 +64,7 @@ $(document).ready(function () {
             return;
         }
 
-        // Collect updated data
+
         const updatedStaffDTO = {
             firstName: $("#firstName-up").val(),
             lastName: $("#lastName-up").val(),
@@ -82,7 +82,6 @@ $(document).ready(function () {
             role: $("#role-up").val()
         };
 
-        // Validate required fields
         if (!updatedStaffDTO.firstName || !updatedStaffDTO.lastName || !updatedStaffDTO.designation ||
             !updatedStaffDTO.gender || !updatedStaffDTO.joinedDate || !updatedStaffDTO.dob ||
             !updatedStaffDTO.contactNo || !updatedStaffDTO.email) {
@@ -90,9 +89,9 @@ $(document).ready(function () {
             return;
         }
 
-        // Send updated data to the backend
+
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/staff/${staffId}`, // Replace with your API endpoint
+            url: `http://localhost:8080/greenshadow/api/v1/staff/${staffId}`,
             method: "PUT",
             contentType: "application/json",
             headers: {
@@ -102,7 +101,7 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("Staff member updated successfully:", response);
                 alert("Staff member updated successfully!");
-                $("#update-staff-member1").modal("hide"); // Close the modal
+                $("#update-staff-member1").modal("hide");
 
                 loadTable()
             },
@@ -115,15 +114,12 @@ $(document).ready(function () {
     function extractDate(isoDateString) {
         const date = new Date(isoDateString);
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
 
         return `${year}-${month}-${day}`;
     }
-
-
-    // Search button click event
-    // Search member button click event
+    // Search member button
     $("#search-member-btn").on("click", function () {
         const username = $("#username-to-delete").val().trim();
         memberIdToDelete = username
@@ -132,23 +128,22 @@ $(document).ready(function () {
             return;
         }
 
-        // Make an AJAX call to search for the member by username
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/staff/${username}`, // Replace with your API endpoint
+            url: `http://localhost:8080/greenshadow/api/v1/staff/${username}`,
             method: "GET",
             headers: {
-                Authorization: "Bearer " + token // Ensure token is set correctly
+                Authorization: "Bearer " + token
             },
             success: function (data) {
-                // Populate the confirmation modal with member data
+
                 $("#delete-id").text(`ID: ${data.staffId}`);
                 $("#delete-name").text(`Name: ${data.firstName} ${data.lastName}`);
                 $("#delete-designation").text(`Designation: ${data.designation}`);
 
-                // Store member ID for deletion
+
                 $("#delete-member-btn").data("member-id", data.staffId);
 
-                // Show the confirmation modal
+
                 $("#confirmation").modal("show");
             },
             error: function (xhr) {
@@ -158,7 +153,7 @@ $(document).ready(function () {
         });
     });
 
-// Delete member button click event
+// Delete member button
     $("#delete-member-btn").on("click", function () {
         if (!memberIdToDelete) {
             alert("Invalid member ID. Please try again.");
@@ -166,18 +161,18 @@ $(document).ready(function () {
         }
        deleteMember(memberIdToDelete)
     });
-
+//Load Data
     function loadTable() {
-        // Clear the existing table body
+
         $("#member-tbody").empty();
 
-        // Make an AJAX call to fetch all staff members
+
         $.ajax({
-            url: "http://localhost:8080/greenshadow/api/v1/staff/getAll", // Update the endpoint as needed
+            url: "http://localhost:8080/greenshadow/api/v1/staff/getAll",
             method: "GET",
             contentType: "application/json",
             headers: {
-                Authorization: "Bearer " + token // Ensure the token is correctly handled
+                Authorization: "Bearer " + token
             },
             success: function (results) {
                 results.map((item,index) => {
@@ -192,7 +187,7 @@ $(document).ready(function () {
                         <td class="field-list"><button class="btn btn-outline-success see-member-btn" data-id="${item.staffId}">...</button></td>
                     </tr>
                 `;
-                    // Append the new record to the table body
+
                     $("#member-tbody").append(record);
 
                 });
@@ -235,14 +230,14 @@ $(document).ready(function () {
             url: `http://localhost:8080/greenshadow/api/v1/staff/${staffId}`,
             method: "DELETE",
             headers: {
-                Authorization: "Bearer " + token // Ensure token is set correctly
+                Authorization: "Bearer " + token
             },
             success: function () {
                 alert("Member deleted successfully.");
                 $("#confirmation").modal("hide");
                 $("#delete-member").modal("hide");
 
-                // Clear search field and reset modal
+
                 $("#username-to-delete").val("");
                 $("#delete-id").text("ID");
                 $("#delete-name").text("Name");
@@ -258,13 +253,13 @@ $(document).ready(function () {
     }
     function searchToUpdate(staffId){
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/staff/${staffId}`, // Replace with your API endpoint
+            url: `http://localhost:8080/greenshadow/api/v1/staff/${staffId}`,
             method: "GET",
             headers: {
                 Authorization: "Bearer "+token
             },
             success: function (staff) {
-                // Populate the second modal with the fetched staff data
+
                 $("#firstName-up").val(staff.firstName);
                 $("#lastName-up").val(staff.lastName);
                 $("#designation-up").val(staff.designation);
@@ -279,7 +274,7 @@ $(document).ready(function () {
                 $("#contactNo-up").val(staff.contactNo);
                 $("#email-up").val(staff.email);
                 $("#role-up").val(staff.role);
-                // Open the second modal
+
                 $("#update-staff-member1").modal("show");
             },
             error: function (xhr) {

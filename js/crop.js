@@ -1,7 +1,43 @@
-import {cropList,token} from "./db/db.js";
+import {cropList, equipmentList, fieldList, token} from "./db/db.js";
 let cropCodeForUsage;
+function populateFields() {
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/field',
+        method: 'GET',
+        dataType: 'json',
+        headers: { 'Authorization': "Bearer " + token },
+        success: function (crops) {
+            fieldList.push(...crops);
+
+            const dropdown = $("#plantedCrop");
+            const dropdown_up = $("#plantedCrop-up");
+
+            crops.forEach(crop => {
+                dropdown.append(
+                    `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
+                );
+                dropdown_up.append(
+                    `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
+                );
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching crops:", error);
+        }
+    });
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/equipment',
+        method: 'GET',
+        dataType: 'json',
+        headers: {'Authorization': "Bearer " + token},
+        success: function (crops) {
+            equipmentList.push(...crops);
+        }
+    })
+}
 $(document).ready(function(){
 
+    populateFields()
     loadTable()
     // Load Data
     function loadTable(){
@@ -26,7 +62,6 @@ $(document).ready(function(){
                     $("#crop-tbody").append(cropRecord);
                 })
                 cropList.push(...crops)
-                console.log(cropList)
                 $('.see-crop-details').on('click', function(){
                     const cropCode = $(this).data('id');
                     cropList.forEach(item => {
@@ -36,7 +71,6 @@ $(document).ready(function(){
                             $("#crop-scientific-name-modal").text(item.cropScientificName)
                             $("#category-modal").text(item.category)
                             $("#season-modal").text(item.season)
-                            //TODO : Load the lists here
                             $("#crop-Image-pre").attr("src", `data:image/png;base64,${item.cropImage}`)
                         }
                     })
@@ -128,7 +162,7 @@ $(document).ready(function(){
     })
 
     //Update Crop
-    $("#search-field-btn-up").on("click", function () {
+    $("#search-crop-btn-up").on("click", function () {
         let cropId = $("#crop-to-update").val().trim();
         cropCodeForUsage = cropId
         if(!cropId){
@@ -149,8 +183,8 @@ $(document).ready(function(){
             success: function (data) {
 
                 $("#delete-crop-code").text(`CODE: ${data.cropCode}`);
-                $("#delete-crop-common").text(`C.NAME: ${data.commonName}`);
-                $("#delete-crop-scientific").text(`S.NAME: ${data.scientificName}`);
+                $("#delete-crop-common").text(`C.NAME: ${data.cropCommonName}`);
+                $("#delete-crop-scientific").text(`S.NAME: ${data.cropScientificName}`);
 
 
                 $("#confirmation-crop").modal("show");
@@ -191,19 +225,19 @@ $(document).ready(function(){
                 Authorization: "Bearer " + token
             },
             success: function (data) {
-                $("#crop-update-name").val(data.commonName);
-                $("#crop-update-s-name").val(data.scientificName);
+                $("#crop-update-name").val(data.cropCommonName);
+                $("#crop-update-s-name").val(data.cropScientificName);
                 $("#crop-update-category").val(data.category);
                 $("#crop-update-season").val(data.season);
 
-                $("#crop-field-list-up").val(data.fieldList.join(", "));
 
-                if (data.image) {
+
+                if (data.cropImage) {
                     $("#crop-image-preview").remove();
 
 
                     const imagePreview = $('<img>', {
-                        src: data.image,
+                        src: `data:image/png;base64,${data.cropImage}`,
                         id: "crop-image-preview",
                         alt: "Crop Image",
                         class: "img-thumbnail mb-2",

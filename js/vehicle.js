@@ -1,10 +1,57 @@
-import {vehicleList, token, equipmentList} from "./db/db.js";
+import {vehicleList, token, equipmentList, staffList} from "./db/db.js";
 
 $(document).ready(function(){
     let vehicleCodeForUsage;
+    loadStaffList()
     loadVehicles();
     $("#update-vehicle-confirm-btn").on("click", function(){
         updateVehicle(vehicleCodeForUsage);
+    })
+    $("#add-vehicle-confirm-btn").on("click", function(){
+        function getSelectedStaff() {
+            const selectedStaff = [];
+
+            $('#staff-members input[type="checkbox"]:checked').each(function() {
+                selectedStaff.push($(this).val());
+            });
+
+            return selectedStaff;
+        }
+        let selectedStaff = getSelectedStaff();
+
+        const formData = new FormData();
+        formData.append("licensePlateNo", $("#add-license-plate").val().trim());
+        formData.append("category", $("#add-category").val().trim());
+        formData.append("fuelType", $("#add-fuel-type").val().trim());
+        formData.append("status", $("#add-vehicle-status").val().trim());
+        formData.append("allocatedStaff", JSON.stringify(selectedStaff));
+        formData.append("remarks",$("#add-remarks").val().trim());
+
+        $.ajax({
+            url: `http://localhost:8080/greenshadow/api/v1/vehicle`,
+            method: "POST",
+            processData: false,
+            contentType: false,
+            headers: {
+                Authorization: "Bearer " + token
+            },
+            data: formData,
+            success: function (response) {
+
+                alert("Vehicle updated successfully!");
+                $("#add-vehicle").modal("hide");
+                loadVehicles()
+            },
+            error: function (xhr, status, error) {
+                // Error handler
+                console.error("Error saving vehicle:", xhr.responseText);
+                alert("Failed to add vehicle. Please try again.");
+            }
+        });
+
+
+
+
     })
     $("#search-vehicle-btn-up").on("click", function(){
         const vCode = $("#vehicle-to-update").val().trim()
@@ -40,25 +87,27 @@ $(document).ready(function(){
                     <td class="equipment-name">${item.category}</td>
                     <td class="equipment-type">${item.fuelType}</td>
                     <td class="equipment-status">${item.status}</td>
-                    <td class="equipment-more"><button class="btn-outline-info see-more-vehicles" data-id="${item.vehicleCode}">...</button</td>
+                    <td class="equipment-more"><button class="btn btn-outline-info see-more-vehicles" data-id="${item.vehicleCode}">...</button</td>
                     </tr>
                     `;
-                    $("crop-tbody").append(vehicleRecord);
+                    $("#vehicle-tbody").append(vehicleRecord);
                 })
                 vehicleList.push(...vehicles)
                 $('.see-more-vehicles').on('click', function(){
                     const vehicleCode = $(this).data('id');
                     vehicleList.forEach(item => {
                         if (vehicleCode === item.vehicleCode){
+                            console.log(item)
                             $("#vehicle-code-modal").text(vehicleCode);
                             $("#license-plate-modal").text(item.licensePlateNo)
                             $("#category-modal").text(item.category)
                             $("#fuel-type-modal").text(item.fuelType)
-                            //TODO : Load the lists here
+                            $("#vehicle-status-modal").text(item.status)
                             $("#remarks-modal").text(item.remarks)
+
                         }
                     })
-                    $("#vehicle-detail").modal("show");
+                    $("#vehicle-detail-modal").modal("show");
                 })
             },
             error:function(xhr, status, error) {
@@ -68,12 +117,15 @@ $(document).ready(function(){
         });
         $("#delete-vehicle-btn-modal").on("click", function () {
             let vehicleCode = $("#vehicle-code-modal").text()
-            $("#vehicle-detail").modal("hide");
+            vehicleCodeForUsage = vehicleCode
+            $("#vehicle-detail-modal").modal("hide");
             searchToDelete(vehicleCode)
         })
         $("#update-vehicle-btn-modal").on("click",function (){
             let vehicleCode = $("#vehicle-code-modal").text()
-            $("#equipment-detail-modal").modal("hide");
+            vehicleCodeForUsage = vehicleCode
+
+            $("#vehicle-detail-modal").modal("hide");
             searchToUpdate(vehicleCode)
         })
     }
@@ -115,11 +167,9 @@ $(document).ready(function(){
                 $("#update-fuel-type").val(data.fuelType);
                 $("#update-vehicle-status").val(data.status);
 
-                $("#update-allocated-staff").val(data.allocatedStaff.join(", "));
-
                 $("#update-remarks").append(data.remarks);
 
-                $("#update-vehicle").modal("show")
+                $("#update-vehicle-modal").modal("show")
             },
             error: function (xhr) {
                 console.error("Error searching for field:", xhr.responseText);
@@ -128,23 +178,28 @@ $(document).ready(function(){
         });
     }
     function updateVehicle(vehicleCode) {
+        console.log("CODE",vehicleCode)
+        function getSelectedStaff() {
+            const selectedStaff = [];
+
+            $('#staff-members-up input[type="checkbox"]:checked').each(function() {
+                selectedStaff.push($(this).val());
+            });
+
+            return selectedStaff;
+        }
+        let selectedStaff = getSelectedStaff();
+
         const formData = new FormData();
-        formData.append("licensePlate", $("#update-license-plate").val().trim());
+        formData.append("licensePlateNo", $("#update-license-plate").val().trim());
         formData.append("category", $("#update-category").val().trim());
         formData.append("fuelType", $("#update-fuel-type").val().trim());
-        formData.append("vehicleStatus", $("#update-vehicle-status").val().trim());
+        formData.append("status", $("#update-vehicle-status").val().trim());
+        formData.append("allocatedStaff", JSON.stringify(selectedStaff));
+        formData.append("remarks",$("#update-remarks").val().trim())
 
 
-        const allocatedStaffInput = $("#update-allocated-staff").val().trim();
-        const allocatedStaffArray = allocatedStaffInput ? allocatedStaffInput.split(",").map(staff => staff.trim()) : [];
-        allocatedStaffArray.forEach(staff => formData.append("allocatedStaff", staff));
 
-        formData.append("remarks", $("#update-remarks").val().trim());
-
-        if (!formData.get("licensePlate") || !formData.get("category") || (formData.get("fuelType")) || isNaN(formData.get("vehicleStatus"))) {
-            alert("Please fill in all required fields correctly.");
-            return;
-        }
         $.ajax({
             url: `http://localhost:8080/greenshadow/api/v1/vehicle/${vehicleCode}`,
             method: "PUT",
@@ -193,3 +248,38 @@ $(document).ready(function(){
         });
     }
 })
+function loadStaffList() {
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/staff/getAll',
+        method: 'GET',
+        dataType: 'json',
+        headers: {'Authorization': "Bearer " + token},
+        success: function (getStaff) {
+
+            staffList.push(...getStaff);
+
+            const dropdown = $("#staff-members");
+            const dropdown_up = $("#staff-members-up");
+
+            dropdown.empty();
+            dropdown_up.empty();
+
+
+            getStaff.forEach(staff => {
+
+                const listItem = $('<li></li>');
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                dropdown.append(listItem);
+
+
+                const listItemUp = $('<li></li>');
+                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                dropdown_up.append(listItemUp);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching Staff members:", error);
+        }
+    });
+
+}

@@ -95,8 +95,6 @@
           <p><strong>Category:</strong> <span id="category-modal"></span></p>
           <p><strong>Fuel Type:</strong> <span id="fuel-type-modal"></span></p>
           <p><strong>Status:</strong> <span id="vehicle-status-modal"></span></p>
-          <p><strong>Allocated Staff :</strong></p>
-          <ul id="staff-list-equipment-modal"></ul>
           <p><strong>Remarks :</strong> <span id="remarks-modal"></span></p>
         </div>
       </div>
@@ -199,15 +197,21 @@
           </div>
           <div class="form-group">
             <label for="update-fuel-type">Fuel Type</label>
-            <input type="number" class="form-control" id="update-fuel-type" required>
+            <input type="text" class="form-control" id="update-fuel-type" required>
           </div>
           <div class="form-group">
-            <label for="update-vehicle-status">Fuel Type</label>
-            <input type="number" class="form-control" id="update-vehicle-status" required>
+            <label for="update-vehicle-status">Status</label>
+            <input type="text" class="form-control" id="update-vehicle-status" required>
           </div>
           <div class="form-group">
-            <label for="update-allocated-staff">Staff List</label>
-            <textarea class="form-control" id="update-allocated-staff" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+            <div class="dropdown">
+              <button class="btn btn-outline-info dropdown-toggle" type="button" id="staffDropdownButton-up" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Staff Members
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="staffDropdownButton-up" style="max-height: 200px; overflow-y: auto;" id="staff-members-up">
+                <!-- Dynamic list items will be inserted here -->
+              </ul>
+            </div>
           </div>
           <div class="form-group">
             <label for="update-remarks">Remarks</label>
@@ -218,6 +222,56 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-outline-primary" id="update-vehicle-confirm-btn">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--ADD -->
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="add-vehicle" tabindex="-1" role="dialog" aria-labelledby="add-vehicle-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="add-vehicle-label">Update  Field</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="add-vehicle-form">
+          <div class="form-group">
+            <label for="add-license-plate">License Plate No</label>
+            <input type="text" class="form-control" id="add-license-plate" required>
+          </div>
+          <div class="form-group">
+            <label for="add-category">Type/Category</label>
+            <input type="text" class="form-control" id="add-category" required>
+          </div>
+          <div class="form-group">
+            <label for="add-fuel-type">Fuel Type</label>
+            <input type="text" class="form-control" id="add-fuel-type" required>
+          </div>
+          <div class="form-group">
+            <label for="add-vehicle-status">Status</label>
+            <input type="text" class="form-control" id="add-vehicle-status" required>
+          </div>
+          <div class="form-group">
+            <div class="dropdown">
+              <button class="btn btn-outline-info dropdown-toggle" type="button" id="staffDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Staff Members
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="staffDropdownButton" style="max-height: 200px; overflow-y: auto;" id="staff-members">
+                <!-- Dynamic list items will be inserted here -->
+              </ul>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="add-remarks">Remarks</label>
+            <textarea class="form-control" id="add-remarks" rows="3" placeholder="Enter Remarks"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" id="add-vehicle-confirm-btn">Add</button>
       </div>
     </div>
   </div>

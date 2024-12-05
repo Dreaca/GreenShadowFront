@@ -5,6 +5,7 @@ let usageCode;
 
 
 function populateFieldsDropdown() {
+
     const fieldDropdown = $("#add-log-field");
     const fieldDropdown2=$("#update-log-field");
     fieldDropdown.empty();

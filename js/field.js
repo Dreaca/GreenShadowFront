@@ -1,4 +1,4 @@
-import {cropList, fieldList, staffList, token} from "./db/db.js";
+import {cropList, fieldList, staffList, token,equipmentList} from "./db/db.js";
 
 function populateCrops() {
     $.ajax({
@@ -25,6 +25,15 @@ function populateCrops() {
             console.error("Error fetching crops:", error);
         }
     });
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/equipment',
+        method: 'GET',
+        dataType: 'json',
+        headers: {'Authorization': "Bearer " + token},
+        success: function (crops) {
+            equipmentList.push(...crops);
+        }
+    })
 }
 function loadStaffList() {
     $.ajax({
@@ -32,19 +41,21 @@ function loadStaffList() {
         method: 'GET',
         dataType: 'json',
         headers: { 'Authorization': "Bearer " + token },
-        success: function (staffList) {
+        success: function (getStaff) {
+            staffList.push(...getStaff);
             const dropdown = $("#staff-members");
             const dropdown_up = $("#staff-members-up");
             dropdown.empty();
             dropdown_up.empty()
 
-            staffList.forEach(staff => {
+            getStaff.forEach(staff => {
 
                 const listItem = $('<li></li>');
                 listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="staff.staffId"> ${staff.firstName} ${staff.lastName}</label>`);
 
                 dropdown.append(listItem);
                 dropdown_up.append(listItem);
+
             });
         },
         error: function (xhr, status, error) {
@@ -58,8 +69,8 @@ let fieldIdForUsage; //Using for general functions
 $(document).ready(function () {
 
     loadStaffList()
-    loadFields()
     populateCrops()
+    loadFields()
 
 
     //SAVE FIELD
@@ -143,12 +154,13 @@ $(document).ready(function () {
     });
     //UPDATE FIELD
     $("#search-field-btn-up").on("click", function () {
-        const fieldID = $("#fieldCode-to-update").text();
+        const fieldID = $("#fieldCode-to-update").val().trim();
         fieldIdForUsage = fieldID;
         if (!fieldID) {
             alert("Please enter a field ID.");
             return;
         }
+        console.log(fieldID)
         searchToUpdate(fieldID)
     })
     $("#updateField-btn").on("click", function () {
@@ -156,6 +168,8 @@ $(document).ready(function () {
     })
     //LOAD DATA
     function loadFields() {
+        let crop;
+        let staffNames;
         $("#field-tbody").empty();
         $.ajax({
             url: 'http://localhost:8080/greenshadow/api/v1/field',
@@ -164,6 +178,12 @@ $(document).ready(function () {
             headers: {'Authorization': "Bearer " + token},
             success: function (fields) {
                 fields.map((field,index)=>{
+
+                    cropList.forEach((item,index)=>{
+                        if (item.platedCrop === field.plantedCrop){
+                            crop = item.cropCommonName;
+                        }
+                    })
                             const fieldRecord = `
                     <tr>
                         <td class="fieldCode">${field.fieldCode}</td>
@@ -185,8 +205,30 @@ $(document).ready(function () {
                             $("#fieldName-modal").text(item.fieldName)
                             $("#location-modal").text(`X: ${item.location.x}, Y: ${item.location.y}`);
                             $("#size-modal").text(item.size)
+                            $("#planted-crop").text(crop)
                             $("#fieldImage1").attr("src", `data:image/png;base64,${item.fieldPicture1}`);
                             $("#fieldImage2").attr("src", `data:image/png;base64,${item.fieldPicture2}`);
+
+                            const matchingStaff = staffList.filter(staff => item.staff.includes(staff.staffId));
+                            const matchingEquipment = equipmentList.filter(eq=>item.equipment.includes(eq.equipmentCode))
+
+                            const workerList = document.getElementById('workerList-modal');
+                            const eqList = document.getElementById('equipmentList-modal');
+                            workerList.innerHTML = '';
+                            eqList.innerHTML = '';
+
+                            matchingStaff.forEach(worker => {
+                                const li = document.createElement('li');
+                                li.textContent = worker.firstName + ' ' + worker.lastName;
+                                li.setAttribute('data-id', worker.staffId);
+                                workerList.appendChild(li);
+                            });
+                            matchingEquipment.forEach(item => {
+                                const li = document.createElement('li');
+                                li.textContent = item.name+" " +item.type;
+                                li.setAttribute('data-id', item.equipmentCode); // Store equipment ID as data attribute
+                                eqList.appendChild(li);
+                            });
                         }
                     })
                     $("#fieldModal").modal("show")
@@ -212,23 +254,7 @@ $(document).ready(function () {
 
 
 })
-function getCrop(plantedCrop){
-    if(!plantedCrop){
-        return null;
-    }
-    const selectedCrop = cropList.find(crop => crop.cropCode === plantedCrop);
-    if (!selectedCrop) {
-        alert("Invalid crop selected.");
-        return;
-    }
-    return selectedCrop;
-}
-function getStaff(staffList_field){
-    return staffList_field.map(name => {
-        const [firstName, lastName] = name.split(" ");
-        return staffList.find(staff => staff.firstName === firstName && staff.lastName === lastName);
-    }).filter(Boolean);
-}
+
 function updateField(fieldCode){
     document.getElementById('updateFieldButton').addEventListener('click', function () {
 
@@ -329,7 +355,7 @@ function searchToUpdate(fieldCode){
     fieldIdForUsage = fieldCode
 
     $.ajax({
-        url: `http://localhost:8080/greenshadow/api/v1/fields/${fieldCode}`,
+        url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`,
         method: "GET",
         headers: {
             Authorization: "Bearer " + token
@@ -337,37 +363,38 @@ function searchToUpdate(fieldCode){
         success: function (data) {
 
             $("#fieldName-up").val(data.fieldName);
-            $("#location-up").val(data.location);
+            $("#location-up").val(`${data.location.x} ,${data.location.y}`);
             $("#size-up").val(data.size);
             $("#plantedCrop-up").val(data.plantedCrop);
-            $("#staffList-up").val(data.staffList.join(", "));
+            $("#staffList-up").val(data.staff.join(", "));
 
 
             $(".img-thumbnail").remove();
 
 
-            if (data.images && data.images.length > 0) {
+
                 const imgPreview1 = $('<img>', {
-                    src: data.images[0],
+                    src: `data:image/png;base64,${data.fieldPicture1}`,
                     alt: "Field Image 1",
                     class: "img-thumbnail mb-2",
-                    style: "max-width: 100%; height: auto;"
+                    style: "max-width: 50%; height: 200px;"
                 });
+
                 $("#image1-up").after(imgPreview1);
 
-                if (data.images.length > 1) {
+
                     const imgPreview2 = $('<img>', {
-                        src: data.images[1],
+                        src: `data:image/png;base64,${data.fieldPicture2}`,
                         alt: "Field Image 2",
                         class: "img-thumbnail mb-2",
-                        style: "max-width: 100%; height: auto;"
+                        style: "max-width: 50%; height: 200px;"
                     });
                     $("#image2-up").after(imgPreview2);
-                }
-            }
 
 
-            $("#updateFieldForm").modal("show");
+
+
+            $("#updateFieldModal").modal("show");
         },
         error: function (xhr) {
             console.error("Error fetching field data:", xhr.responseText);

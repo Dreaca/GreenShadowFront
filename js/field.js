@@ -40,32 +40,38 @@ function loadStaffList() {
         url: 'http://localhost:8080/greenshadow/api/v1/staff/getAll',
         method: 'GET',
         dataType: 'json',
-        headers: { 'Authorization': "Bearer " + token },
+        headers: {'Authorization': "Bearer " + token},
         success: function (getStaff) {
+
             staffList.push(...getStaff);
+
             const dropdown = $("#staff-members");
             const dropdown_up = $("#staff-members-up");
+
             dropdown.empty();
-            dropdown_up.empty()
+            dropdown_up.empty();
+
 
             getStaff.forEach(staff => {
 
                 const listItem = $('<li></li>');
-                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="staff.staffId"> ${staff.firstName} ${staff.lastName}</label>`);
-
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
                 dropdown.append(listItem);
-                dropdown_up.append(listItem);
 
+
+                const listItemUp = $('<li></li>');
+                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                dropdown_up.append(listItemUp);
             });
         },
         error: function (xhr, status, error) {
             console.error("Error fetching Staff members:", error);
         }
     });
+
 }
 
-
-let fieldIdForUsage; //Using for general functions
+    let fieldIdForUsage; //Using for general functions
 $(document).ready(function () {
 
     loadStaffList()
@@ -166,25 +172,25 @@ $(document).ready(function () {
     $("#updateField-btn").on("click", function () {
         updateField(fieldIdForUsage)
     })
-    //LOAD DATA
-    function loadFields() {
-        let crop;
-        let staffNames;
-        $("#field-tbody").empty();
-        $.ajax({
-            url: 'http://localhost:8080/greenshadow/api/v1/field',
-            method: 'GET',
-            dataType: 'json',
-            headers: {'Authorization': "Bearer " + token},
-            success: function (fields) {
-                fields.map((field,index)=>{
+})
+function loadFields() {
+    let crop;
+    let staffNames;
+    $("#field-tbody").empty();
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/field',
+        method: 'GET',
+        dataType: 'json',
+        headers: {'Authorization': "Bearer " + token},
+        success: function (fields) {
+            fields.map((field,index)=>{
 
-                    cropList.forEach((item,index)=>{
-                        if (item.platedCrop === field.plantedCrop){
-                            crop = item.cropCommonName;
-                        }
-                    })
-                            const fieldRecord = `
+                cropList.forEach((item,index)=>{
+                    if (item.platedCrop === field.plantedCrop){
+                        crop = item.cropCommonName;
+                    }
+                })
+                const fieldRecord = `
                     <tr>
                         <td class="fieldCode">${field.fieldCode}</td>
                         <td class="fieldName">${field.fieldName}</td>
@@ -195,65 +201,62 @@ $(document).ready(function () {
                 `;
 
                 fieldList.push(...fields)
-                    $("#field-tbody").append(fieldRecord);
-                });
-                $('.see-field-data').on('click', function() {
-                    const fieldCode = $(this).data('id');
-                    fieldList.forEach(item => {
-                        if (item.fieldCode === fieldCode) {
-                            $("#fieldCode-modal").text(item.fieldCode)
-                            $("#fieldName-modal").text(item.fieldName)
-                            $("#location-modal").text(`X: ${item.location.x}, Y: ${item.location.y}`);
-                            $("#size-modal").text(item.size)
-                            $("#planted-crop").text(crop)
-                            $("#fieldImage1").attr("src", `data:image/png;base64,${item.fieldPicture1}`);
-                            $("#fieldImage2").attr("src", `data:image/png;base64,${item.fieldPicture2}`);
+                $("#field-tbody").append(fieldRecord);
+            });
+            $('.see-field-data').on('click', function() {
+                const fieldCode = $(this).data('id');
+                fieldList.forEach(item => {
+                    console.log(item)
+                    if (item.fieldCode === fieldCode) {
+                        $("#fieldCode-modal").text(item.fieldCode)
+                        $("#fieldName-modal").text(item.fieldName)
+                        $("#location-modal").text(`X: ${item.location.x}, Y: ${item.location.y}`);
+                        $("#size-modal").text(item.size)
+                        $("#planted-crop").text(crop)
+                        $("#fieldImage1").attr("src", `data:image/png;base64,${item.fieldPicture1}`);
+                        $("#fieldImage2").attr("src", `data:image/png;base64,${item.fieldPicture2}`);
 
-                            const matchingStaff = staffList.filter(staff => item.staff.includes(staff.staffId));
-                            const matchingEquipment = equipmentList.filter(eq=>item.equipment.includes(eq.equipmentCode))
+                        const matchingStaff = staffList.filter(staff => item.staff.includes(staff.staffId));
+                        const matchingEquipment = equipmentList.filter(eq=>item.equipment.includes(eq.equipmentCode))
 
-                            const workerList = document.getElementById('workerList-modal');
-                            const eqList = document.getElementById('equipmentList-modal');
-                            workerList.innerHTML = '';
-                            eqList.innerHTML = '';
+                        const workerList = document.getElementById('workerList-modal');
+                        const eqList = document.getElementById('equipmentList-modal');
+                        workerList.innerHTML = '';
+                        eqList.innerHTML = '';
 
-                            matchingStaff.forEach(worker => {
-                                const li = document.createElement('li');
-                                li.textContent = worker.firstName + ' ' + worker.lastName;
-                                li.setAttribute('data-id', worker.staffId);
-                                workerList.appendChild(li);
-                            });
-                            matchingEquipment.forEach(item => {
-                                const li = document.createElement('li');
-                                li.textContent = item.name+" " +item.type;
-                                li.setAttribute('data-id', item.equipmentCode); // Store equipment ID as data attribute
-                                eqList.appendChild(li);
-                            });
-                        }
-                    })
-                    $("#fieldModal").modal("show")
+                        matchingStaff.forEach(worker => {
+                            const li = document.createElement('li');
+                            li.textContent = worker.firstName + ' ' + worker.lastName;
+                            li.setAttribute('data-id', worker.staffId);
+                            workerList.appendChild(li);
+                        });
+                        matchingEquipment.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item.name+" " +item.type;
+                            li.setAttribute('data-id', item.equipmentCode); // Store equipment ID as data attribute
+                            eqList.appendChild(li);
+                        });
+                    }
                 })
-            },
-            error: function (xhr, status, error) {
-                console.error('Error loading fields:', error);
-            }
+                $("#fieldModal").modal("show")
+            })
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading fields:', error);
+        }
 
-        });
-        $("#deleteButton").on("click", function () {
-            let fieldCode = $("#fieldCode-modal").text();
-            $("#fieldModal").modal("hide")
-            searchToDelete(fieldCode)
-        })
-        $("#updateButton").on("click",function (){
-            let fieldCode = $("#fieldCode-modal").text();
-            $("#fieldModal").modal("hide")
-            searchToUpdate(fieldCode)
-        })
-    }
-
-
-
-})
+    });
+    $("#deleteButton").on("click", function () {
+        let fieldCode = $("#fieldCode-modal").text();
+        $("#fieldModal").modal("hide")
+        searchToDelete(fieldCode)
+    })
+    $("#updateButton").on("click",function (){
+        let fieldCode = $("#fieldCode-modal").text();
+        $("#fieldModal").modal("hide")
+        searchToUpdate(fieldCode)
+    })
+}
 
 function updateField(fieldCode){
     document.getElementById('updateFieldButton').addEventListener('click', function () {
@@ -307,8 +310,7 @@ function updateField(fieldCode){
             headers: {'Authorization': "Bearer " + token},
             success: function (data) {
                 console.log('Success:', data);
-
-
+                loadFields();
                 $('#updateFieldModal').modal('hide');
             },
             error: function (xhr, status, error) {
@@ -366,7 +368,7 @@ function searchToUpdate(fieldCode){
             $("#location-up").val(`${data.location.x} ,${data.location.y}`);
             $("#size-up").val(data.size);
             $("#plantedCrop-up").val(data.plantedCrop);
-            $("#staffList-up").val(data.staff.join(", "));
+
 
 
             $(".img-thumbnail").remove();

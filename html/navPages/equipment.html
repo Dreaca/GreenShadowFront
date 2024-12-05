@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Equipment</title>
-    <link rel="stylesheet" href="../../css/bootsrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/equipment.css">
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
@@ -148,15 +148,27 @@
                     </div>
                     <div class="form-group">
                         <label for="update-equipment-status">Status</label>
-                        <input type="number" class="form-control" id="update-equipment-status" required>
+                        <input type="text" class="form-control" id="update-equipment-status" required>
                     </div>
                     <div class="form-group">
-                        <label for="update-equipment-staff">Staff List</label>
-                        <textarea class="form-control" id="update-equipment-staff" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="staffDropdownButton-up" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Staff Members
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="staffDropdownButton-up" style="max-height: 200px; overflow-y: auto;" id="staff-members-up">
+                                <!-- Dynamic list items will be inserted here -->
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="update-equipment-field">Field List</label>
-                        <textarea class="form-control" id="update-equipment-field" rows="3" placeholder="Enter field names separated by commas"></textarea>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="fieldDropDown-up" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Field
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="fieldDropDown-up" style="max-height: 200px; overflow-y: auto;" id="fields-up">
+                                <!-- Dynamic list items will be inserted here -->
+                            </ul>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -177,7 +189,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Search an equipment to delete
+                Search equipment to delete
                 <div class="input-group flex-nowrap">
                     <span class="input-group-text" id="delete-equipment-span">@</span>
                     <input type="text" id="equipment-to-delete" class="form-control" placeholder="Equipment Code" aria-label="EquipmentCode" aria-describedby="delete-equipment-span">
@@ -219,7 +231,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="add-equipment-modal-label">Update  Field</h5>
+                <h5 class="modal-title" id="add-equipment-modal-label">Add  new equipment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -235,27 +247,39 @@
                     </div>
                     <div class="form-group">
                         <label for="add-equipment-status">Status</label>
-                        <input type="number" class="form-control" id="add-equipment-status" required>
+                        <input type="text" class="form-control" id="add-equipment-status" required>
                     </div>
                     <div class="form-group">
-                        <label for="add-equipment-staff">Staff List</label>
-                        <textarea class="form-control" id="add-equipment-staff" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="staffDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Staff Members
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="staffDropdownButton" style="max-height: 200px; overflow-y: auto;" id="staff-members">
+                                <!-- Dynamic list items will be inserted here -->
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="add-equipment-field">Field List</label>
-                        <textarea class="form-control" id="add-equipment-field" rows="3" placeholder="Enter field names separated by commas"></textarea>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-info dropdown-toggle" type="button" id="fieldDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Select Field
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="staffDropdownButton" style="max-height: 200px; overflow-y: auto;" id="fields">
+                            <!-- Dynamic list items will be inserted here -->
+                        </ul>
                     </div>
+                </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary" id="add-equipment-confirm-btn">Update</button>
+                <button type="button" class="btn btn-outline-primary" id="add-equipment-confirm-btn">Save</button>
             </div>
         </div>
     </div>
 </div>
 <script src="../../js/logout.js"></script>
 <script type="module" src="../../js/equipment.js"></script>
-<script src="../../js/bootstrap/bootstrap.min.js"></script>
+<script src="../../js/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
 </html>

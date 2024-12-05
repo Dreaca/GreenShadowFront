@@ -1,7 +1,66 @@
-import {equipmentList, token} from './db/db.js'
+import {cropList, equipmentList, fieldList, staffList, token} from './db/db.js'
 let equipmentCodeForUsage;
-$(document).ready(function() {
+function loadStaffList() {
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/staff/getAll',
+        method: 'GET',
+        dataType: 'json',
+        headers: { 'Authorization': "Bearer " + token },
+        success: function (getStaff) {
+            staffList.push(...getStaff);
+            const dropdown = $("#staff-members");
+            const dropdown_up = $("#staff-members-up");
+            dropdown.empty();
+            dropdown_up.empty()
 
+            getStaff.forEach(staff => {
+
+                const listItem = $('<li></li>');
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                dropdown.append(listItem);
+
+                const listItemUp = $('<li></li>');
+                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                dropdown_up.append(listItemUp);
+
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching Staff members:", error);
+        }
+    });
+}
+function populateField() {
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/field',
+        method: 'GET',
+        dataType: 'json',
+        headers: {'Authorization': "Bearer " + token},
+        success: function (fields) {
+            console.log(fields)
+            fieldList.push(...fields);
+
+            const dropdown = $("#fields");
+            const dropdown_up = $("#fields-up");
+
+            fields.forEach(field => {
+                const listItem = $('<li></li>');
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${field.fieldCode}"> ${field.fieldName} </label>`);
+                dropdown.append(listItem);
+
+                const listItemUp = $('<li></li>');
+                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${field.fieldCode}"> ${field.fieldName}  </label>`);
+                dropdown_up.append(listItemUp);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching crops:", error);
+        }
+    });
+}
+$(document).ready(function() {
+    loadStaffList()
+    populateField()
     // Load Data
     loadEquipment()
     // Update Data
@@ -28,15 +87,44 @@ $(document).ready(function() {
     $("#delete-equipment-confirm-btn").on("click", function () {
         deleteEquipment(equipmentCodeForUsage);
     })
+    //Save data
     $("#add-equipment-confirm-btn").on("click", function () {
-        const formData = new FormData();
-        formData.append("name", $("#add-equipment-name").val().trim());
-        formData.append("type", $("#add-equipment-type").val().trim());
-        formData.append("status", $("#add-equipment-status").val().trim());
-        formData.append("staffList", $("#add-equipment-staff").val().trim());
-        formData.append("fieldList", $("#add-equipment-field").val().trim());
 
-        if (!formData.get("name") || !formData.get("type") || (formData.get("status"))) {
+        function getSelectedStaff() {
+            const selectedStaff = [];
+
+            $('#staff-members input[type="checkbox"]:checked').each(function() {
+                selectedStaff.push($(this).val());
+            });
+
+            return selectedStaff;
+        }
+        function getSelectedFields(){
+            const selectedFields = [];
+
+            $('#fields input[type="checkbox"]:checked').each(function() {
+                selectedFields.push($(this).val());
+            });
+
+            return selectedFields;
+        }
+        let selectedStaff = getSelectedStaff();
+        let selectedFields = getSelectedFields();
+
+        const name =  $("#add-equipment-name").val().trim();
+        const type = $("#add-equipment-type").val().trim()
+        const status =  $("#add-equipment-status").val().trim()
+
+        console.log(name,type,status);
+
+        const formData = new FormData();
+        formData.append("name",name);
+        formData.append("type", type);
+        formData.append("status",status);
+        formData.append("staffList",JSON.stringify(selectedStaff));
+        formData.append("fieldList", JSON.stringify(selectedFields));
+
+        if (!formData.get("name") || !formData.get("type") || !(formData.get("status"))) {
             alert("Please fill in all required fields.");
             return;
         }
@@ -86,7 +174,7 @@ function searchToDelete(equipCode){
 }
 function searchToUpdate(equipCode){
     $.ajax({
-        url: `http://localhost:8080/greenshadow/api/v1/crop/${equipCode}`,
+        url: `http://localhost:8080/greenshadow/api/v1/equipment/${equipCode}`,
         method: "GET",
         headers: {
             Authorization: "Bearer " + token
@@ -109,12 +197,42 @@ function searchToUpdate(equipCode){
     });
 }
 function updateEquipment(equipCode){
+    function getSelectedStaff() {
+        const selectedStaff = [];
+
+        $('#staff-members-up input[type="checkbox"]:checked').each(function() {
+            selectedStaff.push($(this).val());
+        });
+
+        return selectedStaff;
+    }
+    function getSelectedFields(){
+        const selectedFields = [];
+
+        $('#fields-up input[type="checkbox"]:checked').each(function() {
+            selectedFields.push($(this).val());
+        });
+
+        return selectedFields;
+    }
+    let updatedStaff = getSelectedStaff();
+    let updatedFields = getSelectedFields();
+
+
+    if (updatedStaff.length === 0) {
+        alert("Please select at least one staff member.");
+        return;
+    }
+    if (updatedFields.length === 0) {
+        alert("Please select at least one staff member.");
+        return;
+    }
     const formData = new FormData();
     formData.append("name", $("#update-equipment-name").val().trim());
     formData.append("type", $("#update-equipment-type").val().trim());
     formData.append("status", $("#update-equipment-status").val().trim());
-    formData.append("staffList", $("#update-equipment-staff").val().trim());
-    formData.append("fieldList", $("#update-equipment-field").val().trim());
+    formData.append("staffList", JSON.stringify(updatedStaff));
+    formData.append("fieldList", JSON.stringify(updatedFields));
 
     if (!formData.get("name") || !formData.get("type") || (formData.get("status"))) {
         alert("Please fill in all required fields.");
@@ -172,6 +290,7 @@ function loadEquipment(){
         dataType:'json',
         headers:{'Authorization': "Bearer " + token},
         success:function(equipments){
+            console.log(equipments)
             equipments.map((item)=>{
                 const cropRecord=`
                     <tr>
@@ -179,7 +298,7 @@ function loadEquipment(){
                     <td class="equipment-name">${item.name}</td>
                     <td class="equipment-type">${item.type}</td>
                     <td class="equipment-status">${item.status}</td>
-                    <td class="equipment-more"><button class="btn-outline-info see-more-equipment" data-id="${item.equipmentCode}">...</button</td>
+                    <td class="equipment-more"><button class="btn btn-outline-info see-more-equipment" data-id="${item.equipmentCode}">...</button</td>
                     </tr>
                     `;
                 $("#equipment-tbody").append(cropRecord);
@@ -190,8 +309,8 @@ function loadEquipment(){
                 equipmentList.forEach(item => {
                     if (equipCode === item.equipmentCode){
                         $("#equipment-code-modal").text(equipCode)
-                        $("#equipment-name-modal").text(item.commonName)
-                        $("#equipment-type-modal").text(item.scientificName)
+                        $("#equipment-name-modal").text(item.name)
+                        $("#equipment-type-modal").text(item.type)
                         $("#equipment-status-modal").text(item.status)
                         //TODO : Load the lists here
                     }
@@ -209,7 +328,7 @@ function loadEquipment(){
         $("#equipment-detail-modal").modal("hide");
         searchToDelete(equipCode)
     })
-    $("update-equipment-btn-modal").on("click",function (){
+    $("#update-equipment-btn-modal").on("click",function (){
         let equipCode = $("#equipment-code-modal").text()
         $("#equipment-detail-modal").modal("hide");
         searchToUpdate(equipCode)

@@ -83,12 +83,12 @@ $(document).ready(function(){
 
         });
         $("#deleteButton").on("click", function () {
-            let cropCode = $("#cropCode-modal").text()
+            let cropCode = $("#crop-code-modal").text()
             $("#crop-details-modal").modal("hide");
             searchToDelete(cropCode)
         })
-        $("updateButton").on("click",function (){
-            let cropCode = $("#cropCode-modal").text()
+        $("#updateButton").on("click",function (){
+            let cropCode = $("#crop-code-modal").text()
             $("#crop-details-modal").modal("hide");
             searchToUpdate(cropCode)
         })
@@ -152,7 +152,8 @@ $(document).ready(function(){
             alert("Please enter a crop code")
             return;
         }
-        searchToDelete(cropId)
+        console.log(cropId)
+        // searchToDelete(cropId)
     })
     $("#delete-btn").on("click", function () {
         if (!cropCodeForUsage) {

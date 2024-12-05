@@ -39,7 +39,6 @@ $("form").on("submit", function (event) {
     });
 });
 
-// Function to redirect user based on role
 function redirectToDashboard(role) {
     switch (role) {
         case "ROLE_ADMINISTRATOR":
@@ -49,10 +48,7 @@ function redirectToDashboard(role) {
             window.location.href = "./html/navPages/staff.html";
             break;
         case "ROLE_SCIENTIST":
-            window.location.href = "./html/navPages/crop.html";
-            break;
-        case "ROLE_OTHER":
-            window.location.href = "./html/navPages/log.html";
+            window.location.href = "./html/navPages/field.html";
             break;
         default:
             alert("Unknown role. Access restricted.");

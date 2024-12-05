@@ -11,6 +11,7 @@
 </head>
 <body>
 <script src="../../js/jquery/jquery-3.7.1.min.js"></script>
+<script type="module" src="../../js/secure.js"></script>
 <!-- Navbar (Fixed Top) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed">
     <a class="navbar-brand" href="staff.html">Green Shadow</a>
@@ -269,6 +270,15 @@
                                         <label for="dob-up" class="form-label">Date of Birth</label>
                                         <input type="date" class="form-control" id="dob-up" required>
                                     </div>
+                                    <div class="form-group mb-3">
+                                        <label for="role-up" class="form-label">Role</label>
+                                        <select class="form-control" id="role-up" required>
+                                            <option value="ADMINISTRATOR">Administrator</option>
+                                            <option value="SCIENTIST">Scientist</option>
+                                            <option value="MANAGER">Manager</option>
+                                            <option value="OTHER">Other</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <!-- Right Column -->
@@ -307,15 +317,6 @@
                                         <label for="email-up" class="form-label">Email Address</label>
                                         <input type="email" class="form-control" id="email-up"
                                                placeholder="Enter your email" required>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="role-up" class="form-label">Role</label>
-                                        <select class="form-control" id="role-up" required>
-                                            <option value="ADMINISTRATOR">Administrator</option>
-                                            <option value="SCIENTIST">Scientist</option>
-                                            <option value="MANAGER">Manager</option>
-                                            <option value="OTHER">Other</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>

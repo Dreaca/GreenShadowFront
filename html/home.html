@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farm Management System</title>
+  <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+  <style>
+    .jumbotron {
+      background-color: #A8D5BA;
+      height: 100vh;
+      color: black;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-top: 50px;
+
+    }
+
+    .jumbotron img {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      border-radius: 50%;
+    }
+
+    .jumbotron h1 {
+      font-size: 4em;
+      margin-top: 20px;
+    }
+
+    .jumbotron p {
+      font-size: 1.5em;
+      margin-top: 10px;
+    }
+
+    .navbar {
+      background-color: #333;
+    }
+
+    .navbar-nav {
+      margin-left: auto;
+    }
+
+    .navbar-nav li {
+      margin-left: 20px;
+    }
+
+    .navbar-nav li a {
+      color: #fff;
+    }
+
+    .navbar-nav li a:hover {
+      color: #ccc;
+    }
+
+    .navbar-nav li.active a {
+      color: #fff;
+      background-color: #555;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">Farm Management System</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="./navPages/staff.html">Staff</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./navPages/field.html">Field</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="./navPages/crop.html">Crop</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./navPages/equipment.html">Equipment</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./navPages/vehicle.html">Vehicles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./navPages/log.html">Logs</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="jumbotron">
+  <img src="../resources/logo.png" alt="Farm Logo"> <!-- Image placed here -->
+  <h1>Welcome to Farm Management System</h1>
+  <p>This system is designed to help you manage your farm efficiently.</p>
+</div>
+<script src="../js/jquery/jquery-3.7.1.min.js"></script>
+<script src="../js/bootstrap/bootstrap.min.js"></script>
+</body>
+</html>

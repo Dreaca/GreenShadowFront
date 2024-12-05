@@ -1,7 +1,7 @@
 import {staffList} from "./db/db.js";
 $(document).ready(function () {
     const token = localStorage.getItem("authToken")
-    let memberIdToDelete;
+    let usageCode;
     loadTable()
     $("#add-new-member").on("click", function () {
         const updateMember = new FormData();
@@ -57,7 +57,7 @@ $(document).ready(function () {
 
 // Handle Submit button i
     $("#update-member-btn").on("click", function () {
-        const staffId = $("#update-member").val().trim();
+      let  staffId = usageCode;
 
         if (!staffId) {
             alert("Staff ID is missing. Please search for the staff member again.");
@@ -114,7 +114,7 @@ $(document).ready(function () {
     // Search member button
     $("#search-member-btn").on("click", function () {
         const username = $("#username-to-delete").val().trim();
-        memberIdToDelete = username
+        usageCode = username
         if (!username) {
             alert("Please enter a username.");
             return;
@@ -147,11 +147,11 @@ $(document).ready(function () {
 
 // Delete member button
     $("#delete-member-btn").on("click", function () {
-        if (!memberIdToDelete) {
+        if (!usageCode) {
             alert("Invalid member ID. Please try again.");
             return;
         }
-       deleteMember(memberIdToDelete)
+       deleteMember(usageCode)
     });
 //Load Data
     function loadTable() {
@@ -207,13 +207,15 @@ $(document).ready(function () {
         });
         $("#deleteButton").on("click",function(){
             const deleteID = $("#staffId-modal").text()
+            usageCode = deleteID;
             deleteMember(deleteID)
             $("#staffModal").modal("hide");
         })
         $("#updateButton").on("click",function(){
-            const deleteID = $("#staffId-modal").text()
+            const updateId = $("#staffId-modal").text()
+            usageCode = updateId
             $("#staffModal").modal("hide");
-            searchToUpdate(deleteID)
+            searchToUpdate(updateId)
         })
     }
     function deleteMember(staffId){

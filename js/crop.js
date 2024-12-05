@@ -1,17 +1,18 @@
-import {cropList} from "./db/db.js";
+import {cropList,token} from "./db/db.js";
+let cropCodeForUsage;
 $(document).ready(function(){
-    const token = localStorage.getItem("authToken");
-    let cropCodeForUsage;
+
     loadTable()
     // Load Data
     function loadTable(){
         $("crop-tbody").empty();
         $.ajax({
-            url:'http://localhost:8080/greenshadow/api/v1/crop',
+            url:'http://localhost:8080/greenshadow/api/v1/crops',
             method:'GET',
             dataType:'json',
             headers:{'Authorization': "Bearer " + token},
             success:function(crops){
+                console.log(crops)
                 crops.map((crop)=>{
                     const cropRecord=`
                     <tr>
@@ -19,23 +20,24 @@ $(document).ready(function(){
                     <td class="crop-c-name">${crop.cropCommonName}</td>
                     <td class="crop-s-name">${crop.cropScientificName}</td>
                     <td class="crop-category">${crop.category}</td>
-                    <td class="crop-see-more"><button class="btn-outline-info see-crop-details" data-id="${crop.cropCode}">...</button</td>
+                    <td class="crop-see-more"><button class="btn btn-outline-info see-crop-details" data-id="${crop.cropCode}">...</button</td>
                     </tr>
                     `;
-                    $("crop-tbody").append(cropRecord);
+                    $("#crop-tbody").append(cropRecord);
                 })
                 cropList.push(...crops)
+                console.log(cropList)
                 $('.see-crop-details').on('click', function(){
                     const cropCode = $(this).data('id');
                     cropList.forEach(item => {
                         if (cropCode === item.cropCode){
                             $("#crop-code-modal").text(cropCode)
-                            $("#crop-common-name-modal").text(item.commonName)
-                            $("#crop-scientific-name-modal").text(item.scientificName)
+                            $("#crop-common-name-modal").text(item.cropCommonName)
+                            $("#crop-scientific-name-modal").text(item.cropScientificName)
                             $("#category-modal").text(item.category)
                             $("#season-modal").text(item.season)
                             //TODO : Load the lists here
-                            $("#crop-Image-pre").attr("src", `data:image/png;base64,${item.image}`)
+                            $("#crop-Image-pre").attr("src", `data:image/png;base64,${item.cropImage}`)
                         }
                     })
                     $("#crop-details-modal").modal("show");
@@ -65,9 +67,8 @@ $(document).ready(function(){
             scientificName: $("#crop-add-s-name").val().trim(),
             category: $("#crop-add-category").val().trim(),
             season: $("#crop-add-season").val().trim(),
-            fieldList: $("#crop-field-list").val().trim().split(",").map(field => field.trim())
         };
-
+        console.log(cropData)
 
         if (!cropData.commonName || !cropData.scientificName || !cropData.category || !cropData.season) {
             alert("Please fill in all required fields.");
@@ -83,7 +84,6 @@ $(document).ready(function(){
         formData.append("scientificName", cropData.scientificName);
         formData.append("category", cropData.category);
         formData.append("season", cropData.season);
-        formData.append("fieldList", JSON.stringify(cropData.fieldList));
         if (imageFile) {
             formData.append("image", imageFile);
         }
@@ -141,7 +141,7 @@ $(document).ready(function(){
     })
     function searchToDelete(cropCode){
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/crop/${cropCode}`,
+            url: `http://localhost:8080/greenshadow/api/v1/crops/${cropCode}`,
             method: "GET",
             headers: {
                 Authorization: "Bearer " + token
@@ -163,7 +163,7 @@ $(document).ready(function(){
     }
     function deleteCrop(cropCode){
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/field/${cropCode}`,
+            url: `http://localhost:8080/greenshadow/api/v1/crops/${cropCode}`,
             method: "DELETE",
             headers: {
                 Authorization: "Bearer " + token
@@ -185,7 +185,7 @@ $(document).ready(function(){
     }
     function searchToUpdate(cropCode){
         $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/crop/${cropCode}`,
+            url: `http://localhost:8080/greenshadow/api/v1/crops/${cropCode}`,
             method: "GET",
             headers: {
                 Authorization: "Bearer " + token
@@ -263,7 +263,7 @@ $(document).ready(function(){
             success: function (response) {
                 alert("Crop data saved successfully!");
                 $("#update-crop-modal").modal("hide");
-                $("#update-crop-modal")[0].reset();
+                $("#update-crop-form")[0].reset();
                 loadTable()
             },
             error: function (xhr) {

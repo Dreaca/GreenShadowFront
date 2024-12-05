@@ -20,16 +20,18 @@ function populateFieldsDropdown() {
 }
 
 function populateCropsDropdown() {
+    console.log("Crops ",cropList);
     const cropDropdown = $("#add-log-crop");
     const cropDropdown2 = $("#update-log-crop");
     cropDropdown.empty();
+    cropDropdown2.empty();
 
     cropList.forEach(crop => {
         cropDropdown.append(
-            `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.commonName} : ${crop.scientificName}</option>`
+            `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.croCommonName} : ${crop.cropScientificName}</option>`
         );
         cropDropdown2.append(
-            `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.commonName} : ${crop.scientificName}</option>`
+            `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientific}</option>`
         );
     });
 }
@@ -254,7 +256,7 @@ $(document).ready(function () {
     populateFieldsDropdown();
     populateCropsDropdown();
     loadTable()
-    $("#save-crop-button").on("click", function () {
+    $("#save-log-button").on("click", function () {
         e.preventDefault();
 
 

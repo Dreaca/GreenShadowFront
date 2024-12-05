@@ -56,7 +56,7 @@
         </button>
     </nav>
     <div class="logout-section mt-auto">
-        <button type="button" class="btn btn-danger w-100" id="logout-btn">
+        <button type="button" class="btn btn-danger w-100 logut-btn" id="logout-btn">
             Logout
         </button>
     </div>
@@ -214,6 +214,47 @@
         </div>
     </div>
 </div>
+<!--Add Equipment-->
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="add-equipment" tabindex="-1" role="dialog" aria-labelledby="add-equipment-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-equipment-modal-label">Update  Field</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-equipment-form">
+                    <div class="form-group">
+                        <label for="add-equipment-name">Equipment Name</label>
+                        <input type="text" class="form-control" id="add-equipment-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-equipment-type">Type</label>
+                        <input type="text" class="form-control" id="add-equipment-type" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-equipment-status">Status</label>
+                        <input type="number" class="form-control" id="add-equipment-status" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-equipment-staff">Staff List</label>
+                        <textarea class="form-control" id="add-equipment-staff" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-equipment-field">Field List</label>
+                        <textarea class="form-control" id="add-equipment-field" rows="3" placeholder="Enter field names separated by commas"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary" id="add-equipment-confirm-btn">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../js/logout.js"></script>
 <script type="module" src="../../js/equipment.js"></script>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
 </body>

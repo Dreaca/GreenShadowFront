@@ -111,14 +111,6 @@ $(document).ready(function () {
             }
         });
     });
-    export function extractDate(isoDateString) {
-        const date = new Date(isoDateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
-    }
     // Search member button
     $("#search-member-btn").on("click", function () {
         const username = $("#username-to-delete").val().trim();
@@ -192,7 +184,6 @@ $(document).ready(function () {
 
                 });
                 staffList.push(...results);
-                console.log(staffList);
                 $('.see-member-btn').on('click', function() {
                     const staffId = $(this).data('id');
                     let staff ;
@@ -284,6 +275,14 @@ $(document).ready(function () {
         });
     }
 });
+export function extractDate(isoDateString) {
+    const date = new Date(isoDateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
 
 
 

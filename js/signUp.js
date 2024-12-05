@@ -1,27 +1,20 @@
 $(document).ready(function () {
-    // Event listener for form submission
+
     $("form").on("submit", function (event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
+        const password = $("#password").val().trim();
 
-        // Collect StaffDTO and UserDTO data
+        if (password!== $("#confirmPassword").val().trim()){
+            alert("Password is mismatched");
+        }
+
+
         const formData = new FormData();
-        formData.append("firstName", $("#firstName").val());
-        formData.append("lastName", $("#lastName").val());
-        formData.append("designation", $("#designation").val());
-        formData.append("gender", $('input[name="gender"]:checked').val());
-        formData.append("joinedDate", $("#joinedDate").val());
-        formData.append("dob", $("#dob").val());
-        formData.append("role", $("#role").val());
-        formData.append("address1", $("#address1").val());
-        formData.append("address2", $("#address2").val());
-        formData.append("address3", $("#address3").val());
-        formData.append("address4", $("#address4").val());
-        formData.append("address5", $("#address5").val());
-        formData.append("contactNo", $("#contactNo").val());
-        formData.append("email", $("#email").val()); // Email is part of StaffDTO // Email for UserDTO
-        formData.append("password", $("#password").val()); // Password for UserDTO
 
-        // Send the data via AJAX
+        formData.append("email", $("#email").val());
+        formData.append("password", password);
+
+
         sendMultipartRequest("http://localhost:8080/greenshadow/api/v1/auth/signup", formData)
             .then(response => {
                 console.log("SignUp successful:", response);
@@ -35,12 +28,6 @@ $(document).ready(function () {
             });
     });
 
-    /**
-     * Sends an AJAX POST request with multipart/form-data
-     * @param {string} url The endpoint URL.
-     * @param {FormData} formData The form data to send.
-     * @returns {Promise} - A promise that resolves with the server response.
-     */
     function sendMultipartRequest(url, formData) {
         return new Promise((resolve, reject) => {
             $.ajax({

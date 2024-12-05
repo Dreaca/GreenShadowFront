@@ -1,6 +1,8 @@
 // File: login.js
 
 // Assuming the backend API URL for login
+import {cropList, token} from "./db/db.js";
+
 const LOGIN_API_URL = "http://localhost:8080/greenshadow/api/v1/auth/signIn";
 
 // Event listener for form submission using jQuery

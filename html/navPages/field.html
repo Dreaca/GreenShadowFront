@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Field</title>
-    <link rel="stylesheet" href="../../css/bootsrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/field.css">
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
@@ -63,7 +63,7 @@
         </button>
     </nav>
     <div class="logout-section mt-auto">
-        <button type="button" class="btn btn-danger w-100" id="logout-btn">
+        <button type="button" class="btn btn-danger w-100 logout-btn" id="logout-btn">
             Logout
         </button>
     </div>
@@ -157,12 +157,19 @@
                     </div>
                     <div class="form-group">
                         <label for="plantedCrop">Planted Crop</label>
-                        <input type="text" class="form-control" id="plantedCrop" required>
+                        <select class="form-control" id="plantedCrop" required></select>
                     </div>
                     <div class="form-group">
-                        <label for="staffList">Staff List</label>
-                        <textarea class="form-control" id="staffList" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="staffDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Staff Members
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="staffDropdownButton" style="max-height: 200px; overflow-y: auto;" id="staff-members">
+                                <!-- Dynamic list items will be inserted here -->
+                            </ul>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="image1">Upload Image 1</label>
                         <input type="file" class="form-control" id="image1" accept="image/*">
@@ -226,11 +233,17 @@
                     </div>
                     <div class="form-group">
                         <label for="plantedCrop-up">Planted Crop</label>
-                        <input type="text" class="form-control" id="plantedCrop-up" required>
+                        <select class="form-control" id="plantedCrop-up" required></select>
                     </div>
                     <div class="form-group">
-                        <label for="staffList-up">Staff List</label>
-                        <textarea class="form-control" id="staffList-up" rows="3" placeholder="Enter staff names separated by commas"></textarea>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="staffDropdownButton-up" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Staff Members
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="staffDropdownButton" style="max-height: 200px; overflow-y: auto;" id="staff-members-up">
+                                <!-- Dynamic list items will be inserted here -->
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="image1-up">Upload Image 1</label>
@@ -298,9 +311,8 @@
         </div>
     </div>
 </div>
-
-<script src="../../js/bootstrap/bootstrap.min.js"></script>
+<script src="../../js/bootstrap/bootstrap.bundle.min.js"></script>
 <script type="module" src="../../js/field.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="../../js/logout.js"></script>
 </body>
 </html>

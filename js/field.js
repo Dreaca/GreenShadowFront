@@ -1,30 +1,99 @@
-import {fieldList,token} from "./db/db.js";
+import {cropList, fieldList, staffList, token} from "./db/db.js";
+
+function populateCrops() {
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/crops',
+        method: 'GET',
+        dataType: 'json',
+        headers: { 'Authorization': "Bearer " + token },
+        success: function (crops) {
+            cropList.push(...crops);
+
+            const dropdown = $("#plantedCrop");
+            const dropdown_up = $("#plantedCrop-up");
+
+            crops.forEach(crop => {
+                dropdown.append(
+                    `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
+                );
+                dropdown_up.append(
+                    `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
+                );
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching crops:", error);
+        }
+    });
+}
+function loadStaffList() {
+    $.ajax({
+        url: 'http://localhost:8080/greenshadow/api/v1/staff/getAll',
+        method: 'GET',
+        dataType: 'json',
+        headers: { 'Authorization': "Bearer " + token },
+        success: function (staffList) {
+            const dropdown = $("#staff-members");
+            const dropdown_up = $("#staff-members-up");
+            dropdown.empty();
+            dropdown_up.empty()
+
+            staffList.forEach(staff => {
+
+                const listItem = $('<li></li>');
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="staff.staffId"> ${staff.firstName} ${staff.lastName}</label>`);
+
+                dropdown.append(listItem);
+                dropdown_up.append(listItem);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching Staff members:", error);
+        }
+    });
+}
+
+
+let fieldIdForUsage; //Using for general functions
 $(document).ready(function () {
-    // let token = localStorage.getItem('authToken');
+
+    loadStaffList()
     loadFields()
-    let fieldIdForUsage; //Using for general functions
+    populateCrops()
+
 
     //SAVE FIELD
     document.getElementById('saveFieldButton').addEventListener('click', function () {
-
+        // Get the values from the form
         const fieldName = document.getElementById('fieldName').value;
         const location = document.getElementById('location').value;
         const size = document.getElementById('size').value;
-        const plantedCrop = document.getElementById('plantedCrop').value;
-        const staffList = document.getElementById('staffList').value.split(',').map(name => name.trim());
+
+
+        let plantedCrop = $("#plantedCrop").val();
 
         const image1 = document.getElementById('image1').files[0];
         const image2 = document.getElementById('image2').files[0];
 
+
+        let selectedStaff = getSelectedStaff();
+
+
+        if (selectedStaff.length === 0) {
+            alert("Please select at least one staff member.");
+            return;
+        }
 
         const formData = new FormData();
         formData.append('fieldName', fieldName);
         formData.append('location', location);
         formData.append('size', size);
         formData.append('plantedCrop', plantedCrop);
-        formData.append('staffList', JSON.stringify(staffList));
+        formData.append('staffList', JSON.stringify(selectedStaff));
+
         if (image1) formData.append('image1', image1);
         if (image2) formData.append('image2', image2);
+
 
         $.ajax({
             url: 'http://localhost:8080/greenshadow/api/v1/field',
@@ -42,8 +111,18 @@ $(document).ready(function () {
                 console.error('Error:', error);
             }
         });
-
     });
+
+    function getSelectedStaff() {
+        const selectedStaff = [];
+
+        $('#staff-members input[type="checkbox"]:checked').each(function() {
+            selectedStaff.push($(this).val());
+        });
+
+        return selectedStaff;
+    }
+
     //DELETE FIELD
     $("#search-field-btn").on("click", function () {
         const fieldName = $("#fieldCode-to-delete").val().trim();
@@ -129,47 +208,69 @@ $(document).ready(function () {
             searchToUpdate(fieldCode)
         })
     }
-    function deleteField(fieldCode){
-        $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`,
-            method: "DELETE",
-            headers: {
-                Authorization: "Bearer " + token
-            },
-            success: function () {
-                alert("Field Deleted Successfully!")
-                $("#confirmation-field").modal("hide");
 
-                $("#delete-fieldCode").text("");
-                $("#delete-fieldName").text("");
-                $("#delete-fieldLocation").text("");
-                loadFields()
-            },
-            error: function (xhr) {
-                console.error("Error Deleting the field:", xhr.responseText);
-                alert("An error occurred while trying to delete the field. Please try again.");
-            }
-        });
+
+
+})
+function getCrop(plantedCrop){
+    if(!plantedCrop){
+        return null;
     }
-    function updateField(fieldCode){
+    const selectedCrop = cropList.find(crop => crop.cropCode === plantedCrop);
+    if (!selectedCrop) {
+        alert("Invalid crop selected.");
+        return;
+    }
+    return selectedCrop;
+}
+function getStaff(staffList_field){
+    return staffList_field.map(name => {
+        const [firstName, lastName] = name.split(" ");
+        return staffList.find(staff => staff.firstName === firstName && staff.lastName === lastName);
+    }).filter(Boolean);
+}
+function updateField(fieldCode){
+    document.getElementById('updateFieldButton').addEventListener('click', function () {
+
         const fieldName = document.getElementById('fieldName-up').value;
         const location = document.getElementById('location-up').value;
         const size = document.getElementById('size-up').value;
-        const plantedCrop = document.getElementById('plantedCrop-up').value;
-        const staffList = document.getElementById('staffList-up').value.split(',').map(name => name.trim());
+
+
+        let plantedCrop = $("#plantedCrop-up").val();
+
+
+        let selectedStaff = getSelectedStaff();
+
+
+        if (selectedStaff.length === 0) {
+            alert("Please select at least one staff member.");
+            return;
+        }
 
 
         const image1 = document.getElementById('image1-up').files[0];
         const image2 = document.getElementById('image2-up').files[0];
+
+
+        if (!plantedCrop) {
+            plantedCrop = null;
+        }
 
         const formData = new FormData();
         formData.append('fieldName', fieldName);
         formData.append('location', location);
         formData.append('size', size);
         formData.append('plantedCrop', plantedCrop);
-        formData.append('staffList', JSON.stringify(staffList));
+        formData.append('staffList', JSON.stringify(selectedStaff));
+
+
         if (image1) formData.append('image1', image1);
         if (image2) formData.append('image2', image2);
+
+
+        console.log('Selected Staff:', selectedStaff);
+
 
         $.ajax({
             url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`,
@@ -181,85 +282,119 @@ $(document).ready(function () {
             success: function (data) {
                 console.log('Success:', data);
 
+
                 $('#updateFieldModal').modal('hide');
             },
             error: function (xhr, status, error) {
                 console.error('Error:', error);
             }
         });
+    });
+
+
+    function getSelectedStaff() {
+        let selectedStaff = [];
+        $('#staff-members-up input[type="checkbox"]:checked').each(function () {
+
+            selectedStaff.push($(this).val());
+        });
+        return selectedStaff;
     }
-    function searchToUpdate(fieldCode){
-        fieldIdForUsage = fieldCode
 
-        $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/fields/${fieldCode}`,
-            method: "GET",
-            headers: {
-                Authorization: "Bearer " + token
-            },
-            success: function (data) {
+}
+function searchToDelete(fieldCode){
+    fieldIdForUsage = fieldCode
+    $.ajax({
+        url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`,
+        method: "GET",
+        headers: {
+            Authorization: "Bearer " + token
+        },
+        success: function (data) {
 
-                $("#fieldName-up").val(data.fieldName);
-                $("#location-up").val(data.location);
-                $("#size-up").val(data.size);
-                $("#plantedCrop-up").val(data.plantedCrop);
-                $("#staffList-up").val(data.staffList.join(", "));
-
-
-                $(".img-thumbnail").remove();
+            $("#delete-fieldCode").text(`ID: ${data.fieldCode}`);
+            $("#delete-fieldName").text(`Name: ${data.fieldName}`);
+            $("#delete-fieldLocation").text(`Location: ${data.location.x}, ${data.location.y}`);
 
 
-                if (data.images && data.images.length > 0) {
-                    const imgPreview1 = $('<img>', {
-                        src: data.images[0],
-                        alt: "Field Image 1",
+            $("#confirmation-field").modal("show");
+        },
+        error: function (xhr) {
+            console.error("Error searching for field:", xhr.responseText);
+            alert("An error occurred while searching for the field. Please try again.");
+        }
+    });
+}
+function searchToUpdate(fieldCode){
+    fieldIdForUsage = fieldCode
+
+    $.ajax({
+        url: `http://localhost:8080/greenshadow/api/v1/fields/${fieldCode}`,
+        method: "GET",
+        headers: {
+            Authorization: "Bearer " + token
+        },
+        success: function (data) {
+
+            $("#fieldName-up").val(data.fieldName);
+            $("#location-up").val(data.location);
+            $("#size-up").val(data.size);
+            $("#plantedCrop-up").val(data.plantedCrop);
+            $("#staffList-up").val(data.staffList.join(", "));
+
+
+            $(".img-thumbnail").remove();
+
+
+            if (data.images && data.images.length > 0) {
+                const imgPreview1 = $('<img>', {
+                    src: data.images[0],
+                    alt: "Field Image 1",
+                    class: "img-thumbnail mb-2",
+                    style: "max-width: 100%; height: auto;"
+                });
+                $("#image1-up").after(imgPreview1);
+
+                if (data.images.length > 1) {
+                    const imgPreview2 = $('<img>', {
+                        src: data.images[1],
+                        alt: "Field Image 2",
                         class: "img-thumbnail mb-2",
                         style: "max-width: 100%; height: auto;"
                     });
-                    $("#image1-up").after(imgPreview1);
-
-                    if (data.images.length > 1) {
-                        const imgPreview2 = $('<img>', {
-                            src: data.images[1],
-                            alt: "Field Image 2",
-                            class: "img-thumbnail mb-2",
-                            style: "max-width: 100%; height: auto;"
-                        });
-                        $("#image2-up").after(imgPreview2);
-                    }
+                    $("#image2-up").after(imgPreview2);
                 }
-
-
-                $("#updateFieldForm").modal("show");
-            },
-            error: function (xhr) {
-                console.error("Error fetching field data:", xhr.responseText);
-                alert("Failed to load field data. Please try again.");
             }
-        });
-
-    }
-    function searchToDelete(fieldCode){
-        fieldIdForUsage = fieldCode
-        $.ajax({
-            url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`,
-            method: "GET",
-            headers: {
-                Authorization: "Bearer " + token
-            },
-            success: function (data) {
-
-                $("#delete-fieldCode").text(`ID: ${data.fieldCode}`);
-                $("#delete-fieldName").text(`Name: ${data.fieldName}`);
-                $("#delete-fieldLocation").text(`Location: ${data.location.x}, ${data.location.y}`);
 
 
-                $("#confirmation-field").modal("show");
-            },
-            error: function (xhr) {
-                console.error("Error searching for field:", xhr.responseText);
-                alert("An error occurred while searching for the field. Please try again.");
-            }
-        });
-    }
-})
+            $("#updateFieldForm").modal("show");
+        },
+        error: function (xhr) {
+            console.error("Error fetching field data:", xhr.responseText);
+            alert("Failed to load field data. Please try again.");
+        }
+    });
+
+}
+function deleteField(fieldCode){
+    $.ajax({
+        url: `http://localhost:8080/greenshadow/api/v1/field/${fieldCode}`,
+        method: "DELETE",
+        headers: {
+            Authorization: "Bearer " + token
+        },
+        success: function () {
+            alert("Field Deleted Successfully!")
+            $("#confirmation-field").modal("hide");
+
+            $("#delete-fieldCode").text("");
+            $("#delete-fieldName").text("");
+            $("#delete-fieldLocation").text("");
+            loadFields()
+        },
+        error: function (xhr) {
+            console.error("Error Deleting the field:", xhr.responseText);
+            alert("An error occurred while trying to delete the field. Please try again.");
+        }
+    });
+}

@@ -30,8 +30,8 @@ function decodeJwtToken(token) {
 function restrictAccess(role) {
     // Define access mapping
     const roleAccessMap = {
-        ROLE_MANAGER: ["staff.html", "field.html", "crop.html", "equipment.html", "vehicles.html", "log.html"],
-        ROLE_ADMINISTRATOR: ["staff.html", "equipment.html", "vehicles.html"],
+        ROLE_MANAGER: ["staff.html", "field.html", "crop.html", "equipment.html", "vehicle.html", "log.html"],
+        ROLE_ADMINISTRATOR: ["staff.html", "equipment.html", "vehicle.html"],
         ROLE_SCIENTIST: ["field.html", "crop.html", "log.html"],
     };
 

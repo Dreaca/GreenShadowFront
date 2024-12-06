@@ -14,10 +14,10 @@ function populateCrops() {
 
             crops.forEach(crop => {
                 dropdown.append(
-                    `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
+                    `<option value="${crop.cropCode}" data-id="${JSON.stringify(crop)}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
                 );
                 dropdown_up.append(
-                    `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
+                    `<option value="${crop.cropCode}" data-id="${JSON.stringify(crop)}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
                 );
             });
         },
@@ -55,12 +55,12 @@ function loadStaffList() {
             getStaff.forEach(staff => {
 
                 const listItem = $('<li></li>');
-                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-value='${JSON.stringify(staff)}'> ${staff.firstName} ${staff.lastName}</label>`);
                 dropdown.append(listItem);
 
 
                 const listItemUp = $('<li></li>');
-                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-value='${JSON.stringify(staff)}'> ${staff.firstName} ${staff.lastName}</label>`);
                 dropdown_up.append(listItemUp);
             });
         },
@@ -87,7 +87,7 @@ $(document).ready(function () {
         const size = document.getElementById('size').value;
 
 
-        let plantedCrop = $("#plantedCrop").val();
+        let plantedCrop = $("#plantedCrop").data('id');
 
         const image1 = document.getElementById('image1').files[0];
         const image2 = document.getElementById('image2').files[0];
@@ -121,7 +121,7 @@ $(document).ready(function () {
             headers: {'Authorization': "Bearer " + token},
             success: function (data) {
                 console.log('Success:', data);
-
+                loadFields()
                 $('#addFieldModal').modal('hide');
             },
             error: function (xhr, status, error) {
@@ -134,7 +134,7 @@ $(document).ready(function () {
         const selectedStaff = [];
 
         $('#staff-members input[type="checkbox"]:checked').each(function() {
-            selectedStaff.push($(this).val());
+            selectedStaff.push($(this).data("value"));
         });
 
         return selectedStaff;
@@ -184,12 +184,6 @@ function loadFields() {
         headers: {'Authorization': "Bearer " + token},
         success: function (fields) {
             fields.map((field,index)=>{
-
-                cropList.forEach((item,index)=>{
-                    if (item.platedCrop === field.plantedCrop){
-                        crop = item.cropCommonName;
-                    }
-                })
                 const fieldRecord = `
                     <tr>
                         <td class="fieldCode">${field.fieldCode}</td>
@@ -206,7 +200,12 @@ function loadFields() {
             $('.see-field-data').on('click', function() {
                 const fieldCode = $(this).data('id');
                 fieldList.forEach(item => {
-                    console.log(item)
+                    let crop ;
+                    if (item.crop === null){
+                        crop = "N/A"
+                    }else{
+                        crop = crop.cropCommonName
+                    }
                     if (item.fieldCode === fieldCode) {
                         $("#fieldCode-modal").text(item.fieldCode)
                         $("#fieldName-modal").text(item.fieldName)
@@ -216,13 +215,13 @@ function loadFields() {
                         $("#fieldImage1").attr("src", `data:image/png;base64,${item.fieldPicture1}`);
                         $("#fieldImage2").attr("src", `data:image/png;base64,${item.fieldPicture2}`);
 
-                        const matchingStaff = staffList.filter(staff => item.staff.includes(staff.staffId));
+                        staffList.push(...item.staff);
+
+                        const matchingStaff = staffList;
                         const matchingEquipment = equipmentList.filter(eq=>item.equipment.includes(eq.equipmentCode))
 
                         const workerList = document.getElementById('workerList-modal');
-                        const eqList = document.getElementById('equipmentList-modal');
                         workerList.innerHTML = '';
-                        eqList.innerHTML = '';
 
                         matchingStaff.forEach(worker => {
                             const li = document.createElement('li');
@@ -266,7 +265,7 @@ function updateField(fieldCode){
         const size = document.getElementById('size-up').value;
 
 
-        let plantedCrop = $("#plantedCrop-up").val();
+        let plantedCrop = $("#plantedCrop-up").data('id');
 
 
         let selectedStaff = getSelectedStaff();
@@ -324,7 +323,7 @@ function updateField(fieldCode){
         let selectedStaff = [];
         $('#staff-members-up input[type="checkbox"]:checked').each(function () {
 
-            selectedStaff.push($(this).val());
+            selectedStaff.push($(this).data("value"));
         });
         return selectedStaff;
     }

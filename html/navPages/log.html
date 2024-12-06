@@ -138,15 +138,21 @@
                     </div>
                     <div class="form-group">
                         <label for="add-log-field">Field </label>
-                        <select class="form-control" id="add-log-field" required></select>
+                        <select class="form-control" id="add-log-field"></select>
                     </div>
                     <div class="form-group">
                         <label for="add-log-crop">Crop</label>
                         <select class="form-control" id="add-log-crop"></select>
                     </div>
                     <div class="form-group">
-                        <label for="log-staff-list">Staff List</label>
-                        <textarea class="form-control" id="log-staff-list" rows="3" placeholder="Enter field names separated by commas"></textarea>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="staffDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Staff Members
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="staffDropdownButton" style="max-height: 200px; overflow-y: auto;" id="staff-members">
+                                <!-- Dynamic list items will be inserted here -->
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="log-image">Upload Image </label>
@@ -210,8 +216,14 @@
                         <select class="form-control" id="update-log-crop"></select>
                     </div>
                     <div class="form-group">
-                        <label for="log-staff-list-update">Staff List</label>
-                        <textarea class="form-control" id="log-staff-list-update" rows="3" placeholder="Enter field names separated by commas"></textarea>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="staffDropdownButton-up" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Staff Members
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="staffDropdownButton-up" style="max-height: 200px; overflow-y: auto;" id="staff-members-up">
+                                <!-- Dynamic list items will be inserted here -->
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="log-image-up">Upload Image </label>
@@ -276,7 +288,7 @@
 </div>
 <script src="../../js/logout.js"></script>
 <script type="module" src="../../js/log.js"></script>
-<script src="../../js/bootstrap/bootstrap.min.js"></script>
+<script src="../../js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-multiselect/dist/js/bootstrap-multiselect.min.js"></script>
 </body>
 </html>

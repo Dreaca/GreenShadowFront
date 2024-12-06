@@ -6,34 +6,36 @@ function populateFields() {
         method: 'GET',
         dataType: 'json',
         headers: { 'Authorization': "Bearer " + token },
-        success: function (crops) {
-            fieldList.push(...crops);
+        success: function (fields) {
+            fieldList.push(...fields);
 
-            const dropdown = $("#plantedCrop");
-            const dropdown_up = $("#plantedCrop-up");
 
-            crops.forEach(crop => {
-                dropdown.append(
-                    `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
-                );
-                dropdown_up.append(
-                    `<option value="${crop.cropCode}" data-id="${crop.cropCode}">${crop.cropCommonName} : ${crop.cropScientificName}</option>`
-                );
+            const dropdown = $("#fields");
+            const dropdown_up = $("#fields-up");
+
+            fields.forEach(field => {
+                const listItem = $('<li></li>');
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${field.fieldCode}" data-field ='${JSON.stringify(field)}'> ${field.fieldName} </label>`);
+                dropdown.append(listItem);
+
+                const listItemUp = $('<li></li>');
+                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${field.fieldCode}"> ${field.fieldName}  </label>`);
+                dropdown_up.append(listItemUp);
             });
         },
         error: function (xhr, status, error) {
             console.error("Error fetching crops:", error);
         }
     });
-    $.ajax({
-        url: 'http://localhost:8080/greenshadow/api/v1/equipment',
-        method: 'GET',
-        dataType: 'json',
-        headers: {'Authorization': "Bearer " + token},
-        success: function (crops) {
-            equipmentList.push(...crops);
-        }
-    })
+    // $.ajax({
+    //     url: 'http://localhost:8080/greenshadow/api/v1/equipment',
+    //     method: 'GET',
+    //     dataType: 'json',
+    //     headers: {'Authorization': "Bearer " + token},
+    //     success: function (crops) {
+    //         equipmentList.push(...crops);
+    //     }
+    // })
 }
 $(document).ready(function(){
 
@@ -96,11 +98,25 @@ $(document).ready(function(){
     //Save data
     $("#save-crop-button").on("click", function () {
 
+        function getSelectedStaff() {
+            const selectedStaff = [];
+
+            $('#fields input[type="checkbox"]:checked').each(function() {
+                selectedStaff.push($(this).data("field"));
+            });
+
+            return selectedStaff;
+        }
+
+
+        let field = getSelectedStaff();
+
         const cropData = {
             commonName: $("#crop-add-name").val().trim(),
             scientificName: $("#crop-add-s-name").val().trim(),
             category: $("#crop-add-category").val().trim(),
             season: $("#crop-add-season").val().trim(),
+            fields:JSON.stringify(field)
         };
         console.log(cropData)
 
@@ -108,6 +124,7 @@ $(document).ready(function(){
             alert("Please fill in all required fields.");
             return;
         }
+        console.log(field)
 
 
         const imageFile = $("#crop-image")[0].files[0];
@@ -118,6 +135,7 @@ $(document).ready(function(){
         formData.append("scientificName", cropData.scientificName);
         formData.append("category", cropData.category);
         formData.append("season", cropData.season);
+        formData.append("fields",cropData.fields)
         if (imageFile) {
             formData.append("image", imageFile);
         }

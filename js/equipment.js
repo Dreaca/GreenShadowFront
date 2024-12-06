@@ -45,11 +45,11 @@ function populateField() {
 
             fields.forEach(field => {
                 const listItem = $('<li></li>');
-                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${field.fieldCode}"> ${field.fieldName} </label>`);
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${field.fieldCode}" data-value="${field}"> ${field.fieldName} </label>`);
                 dropdown.append(listItem);
 
                 const listItemUp = $('<li></li>');
-                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${field.fieldCode}"> ${field.fieldName}  </label>`);
+                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${field.fieldCode} data-value="${field}"> ${field.fieldName}  </label>`);
                 dropdown_up.append(listItemUp);
             });
         },
@@ -94,7 +94,7 @@ $(document).ready(function() {
             const selectedStaff = [];
 
             $('#staff-members input[type="checkbox"]:checked').each(function() {
-                selectedStaff.push($(this).val());
+                selectedStaff.push($(this).data("value"));
             });
 
             return selectedStaff;
@@ -103,7 +103,7 @@ $(document).ready(function() {
             const selectedFields = [];
 
             $('#fields input[type="checkbox"]:checked').each(function() {
-                selectedFields.push($(this).val());
+                selectedFields.push($(this).data("value"));
             });
 
             return selectedFields;
@@ -151,6 +151,7 @@ $(document).ready(function() {
     })
 })
 function searchToDelete(equipCode){
+    equipmentCodeForUsage =equipCode
     $.ajax({
         url: `http://localhost:8080/greenshadow/api/v1/equipment/${equipCode}`,
         method: "GET",
@@ -173,6 +174,7 @@ function searchToDelete(equipCode){
     });
 }
 function searchToUpdate(equipCode){
+    equipmentCodeForUsage = equipCode;
     $.ajax({
         url: `http://localhost:8080/greenshadow/api/v1/equipment/${equipCode}`,
         method: "GET",
@@ -197,11 +199,12 @@ function searchToUpdate(equipCode){
     });
 }
 function updateEquipment(equipCode){
+
     function getSelectedStaff() {
         const selectedStaff = [];
 
         $('#staff-members-up input[type="checkbox"]:checked').each(function() {
-            selectedStaff.push($(this).val());
+            selectedStaff.push($(this).data("value"));
         });
 
         return selectedStaff;
@@ -210,7 +213,7 @@ function updateEquipment(equipCode){
         const selectedFields = [];
 
         $('#fields-up input[type="checkbox"]:checked').each(function() {
-            selectedFields.push($(this).val());
+            selectedFields.push($(this).data("value"));
         });
 
         return selectedFields;
@@ -219,14 +222,7 @@ function updateEquipment(equipCode){
     let updatedFields = getSelectedFields();
 
 
-    if (updatedStaff.length === 0) {
-        alert("Please select at least one staff member.");
-        return;
-    }
-    if (updatedFields.length === 0) {
-        alert("Please select at least one staff member.");
-        return;
-    }
+
     const formData = new FormData();
     formData.append("name", $("#update-equipment-name").val().trim());
     formData.append("type", $("#update-equipment-type").val().trim());
@@ -234,7 +230,7 @@ function updateEquipment(equipCode){
     formData.append("staffList", JSON.stringify(updatedStaff));
     formData.append("fieldList", JSON.stringify(updatedFields));
 
-    if (!formData.get("name") || !formData.get("type") || (formData.get("status"))) {
+    if (!formData.get("name") || !formData.get("type") || !(formData.get("status"))) {
         alert("Please fill in all required fields.");
         return;
     }
@@ -302,8 +298,11 @@ function loadEquipment(){
                     </tr>
                     `;
                 $("#equipment-tbody").append(cropRecord);
+                staffList.push(...item.staff)
+                fieldList.push(...item.field);
             })
             equipmentList.push(...equipments)
+
             $('.see-more-equipment').on('click', function(){
                 const equipCode = $(this).data('id');
                 equipmentList.forEach(item => {
@@ -313,6 +312,17 @@ function loadEquipment(){
                         $("#equipment-type-modal").text(item.type)
                         $("#equipment-status-modal").text(item.status)
                         //TODO : Load the lists here
+
+                        const matchingStaff = staffList;
+                        const workerList = document.getElementById('workerList-modal');
+                        workerList.innerHTML = '';
+
+                        matchingStaff.forEach(worker => {
+                            const li = document.createElement('li');
+                            li.textContent = worker.firstName + ' ' + worker.lastName;
+                            li.setAttribute('data-id', worker.staffId);
+                            workerList.appendChild(li);
+                        });
                     }
                 })
                 $("#equipment-detail-modal").modal("show");

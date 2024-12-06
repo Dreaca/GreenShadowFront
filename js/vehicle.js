@@ -12,7 +12,7 @@ $(document).ready(function(){
             const selectedStaff = [];
 
             $('#staff-members input[type="checkbox"]:checked').each(function() {
-                selectedStaff.push($(this).val());
+                selectedStaff.push($(this).data('value'));
             });
 
             return selectedStaff;
@@ -38,7 +38,7 @@ $(document).ready(function(){
             data: formData,
             success: function (response) {
 
-                alert("Vehicle updated successfully!");
+                alert("Vehicle Saved successfully!");
                 $("#add-vehicle").modal("hide");
                 loadVehicles()
             },
@@ -183,7 +183,7 @@ $(document).ready(function(){
             const selectedStaff = [];
 
             $('#staff-members-up input[type="checkbox"]:checked').each(function() {
-                selectedStaff.push($(this).val());
+                selectedStaff.push($(this).data("value"));
             });
 
             return selectedStaff;
@@ -238,7 +238,7 @@ $(document).ready(function(){
                 $("#delete-vehicle-status").text("");
 
 
-                $("#confirmation-equipment").modal("hide");
+                $("#confirmation-vehicle").modal("hide");
                 loadVehicles()
             },
             error: function (xhr) {
@@ -268,12 +268,12 @@ function loadStaffList() {
             getStaff.forEach(staff => {
 
                 const listItem = $('<li></li>');
-                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                listItem.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-value="${JSON.stringify(staff)}"> ${staff.firstName} ${staff.lastName}</label>`);
                 dropdown.append(listItem);
 
 
                 const listItemUp = $('<li></li>');
-                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-id="${staff.staffId}"> ${staff.firstName} ${staff.lastName}</label>`);
+                listItemUp.html(`<label class="dropdown-item"><input type="checkbox" value="${staff.staffId}" data-value="${JSON.stringify(staff)}"> ${staff.firstName} ${staff.lastName}</label>`);
                 dropdown_up.append(listItemUp);
             });
         },

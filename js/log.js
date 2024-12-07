@@ -104,7 +104,6 @@ function loadTable() {
                         $("#observation-modal").text(item.observation)
                         $("#field-modal").text(field)
                         $("#crop-modal").text(crop)
-                        //TODO : Load the lists here
                         $("#log-Image-pre").attr("src", `data:image/png;base64,${item.logImage}`)
                     }
                 })
